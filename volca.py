@@ -25,14 +25,15 @@ def iprice_max(w):					#função que retorna o endereço/dia do maior ponto
 	return indice_maior		
 
 
-def iprice_min(w):				#função que retorna o endereço/dia do menor ponto		
+def iprice_min(w):				#função que retorna o endereço/dia do menor ponto			
 	keys_w = w.keys()	
-	menor = w[keys_w[0]]
+	menor = w[keys_w[0]]	
 	for i in w:
 		if w[i] < menor:
 			indice_menor = i
 			menor = w[i]
 	return indice_menor
+
 
 f = open("input.in", "r") #abre o arquivo de entradas
 w_mod = int(f.readline()) #le o |w|
