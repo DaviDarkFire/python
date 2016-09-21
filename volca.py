@@ -17,7 +17,8 @@ def slide(W,w,w_mod,flag):			#o parâmetro flag indica se eu vou ter que preench
 
 def iprice_max(w):					#função que retorna o endereço/dia do maior ponto	
 	keys_w = w.keys()	
-	maior = w[keys_w[0]]				
+	maior = w[keys_w[0]]
+	indice_maior = keys_w[0]				
 	for i in w:		
 		if w[i] > maior:
 			indice_maior = i
@@ -27,7 +28,8 @@ def iprice_max(w):					#função que retorna o endereço/dia do maior ponto
 
 def iprice_min(w):				#função que retorna o endereço/dia do menor ponto			
 	keys_w = w.keys()	
-	menor = w[keys_w[0]]	
+	menor = w[keys_w[0]]
+	indice_menor = keys_w[0]	
 	for i in w:
 		if w[i] < menor:
 			indice_menor = i
