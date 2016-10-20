@@ -9,26 +9,36 @@ def distancia_vertical(x1,x2,x3,y1,y2,y3): #essa distância vertical retorna a d
         dv = dv*(-1)
     return dv
 
-def calc_pip(W,w,x1,y1,x2,y2,count): #tem que passar count dividido por 2
+def calc_pip(W,x1,y1,x2,y2): #tem que passar count dividido por 2
     keys_W = W.keys()
     i = keys_W.index(x1)
     j = keys_W.index(x2)
-
-    if (count == 0): #condição de fim da recursão
-        return count
-
-    dv = 0
-    dv_aux = 0
-    x_aux = 0
-    y_aux = 0
+    dv = dv_aux = x_aux = y_aux = 0
     for k in keys_W[i:j+1]:
         dv_aux = distancia_vertical(x1,x2,k,y1,y2,W[k])
         if(dv_aux > dv):
-            x_aux = k
             y_aux = W[k]
             dv = dv_aux
+            x_aux = k
+    return x_aux,y_aux
 
-    w[x_aux] = y_aux
-    count = count-1
-    calc_pip(W,w,x1,y1,x_aux,y_aux,count)
-    calc_pip(W,w,x_aux,y_aux,x2,y2,count)
+def find_pips(W,w,x1,y1,x2,y2,count):
+
+    x,y = calc_pip(W,x1,y1,x2,y2)
+    print x
+    print y
+
+
+
+
+
+
+
+f = open("input.in", "r") #abre o arquivo de entradas
+count = int(f.readline()) #le a quantidade de pips que se deseja
+W = {1:1,2:20,3:-10,4:40,5:-50,6:60,7:70,8:80,9:-90,10:100}                    #cria o dicionario W
+w = {}					  #cria o dicionário w
+keys_W = W.keys()
+find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],count)
+
+f.close()
