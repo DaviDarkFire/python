@@ -23,22 +23,26 @@ def calc_pip(W,x1,y1,x2,y2): #tem que passar count dividido por 2
     return x_aux,y_aux
 
 def find_pips(W,w,x1,y1,x2,y2,count):
-
     x,y = calc_pip(W,x1,y1,x2,y2)
-    print x
-    print y
+    w[x] = y
 
+    if (count == 0):
+        return w
 
+    count = count-1
+    find_pips(W,w,x1,y1,x,y,count)
+    find_pips(W,w,x,y,x2,y2,count)
 
-
-
-
-
+# Main
 f = open("input.in", "r") #abre o arquivo de entradas
 count = int(f.readline()) #le a quantidade de pips que se deseja
 W = {1:1,2:20,3:-10,4:40,5:-50,6:60,7:70,8:80,9:-90,10:100}                    #cria o dicionario W
 w = {}					  #cria o dicionário w
 keys_W = W.keys()
-find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],count)
+
+w[keys_W[0]] = W[keys_W[0]]
+w[keys_W[-1]] = W[keys_W[-1]]
+
+find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],count/2)
 
 f.close()
