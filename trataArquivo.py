@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#código pra criar um arquivo com somente os valores que serão necessários para os programas
+
 s = open("output.ou", "w")
 
 with open('input.in') as f:

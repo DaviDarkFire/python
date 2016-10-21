@@ -23,34 +23,52 @@ def calc_pip(W,x1,y1,x2,y2): #tem que passar count dividido por 2
             x_aux = k
     return x_aux,y_aux
 
-def find_pips(W,w,x1,y1,x2,y2,count):
-    x,y = calc_pip(W,x1,y1,x2,y2)
-    w[x] = y
+def pip(W, count): # tentativa com o código do github
+    w = {}
 
-    print x
-    print y
-    print "\n"
+    for (dia, preco) in enumerate(W):
+        w[dia] = preco
+        if len(w) <= k:
+            continue
 
-    if (count == 0):
-        return
+        miniv = sys.maxsize
+        minij = 0
 
-    count = count-1
-    find_pips(W,w,x1,y1,x,y,count)
-    find_pips(W,w,x,y,x2,y2,count)
+        for j in range(1, len(w) - 1):
+            d = distancia_vertical(ret[j - 1], ret[j], ret[j + 1]) #alterar
+            if d < miniv:
+                miniv = d
+                minij = j
+
+        del w[minij]
 
     return w
 
+def trataValores(valores):
+    aux = valores[0].split(" ")
+    val = aux[0]+aux[1]
+
+    return float(val), float(valores[1])
+
 # Main
-f = open("input.in", "r") #abre o arquivo de entradas
-count = int(f.readline()) #le a quantidade de pips que se deseja
-W = {1:1,2:20,3:-10,4:40,5:-90,6:60,7:70,8:80,9:-50,10:100}                    #cria o dicionario W
+W = {}
+with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
+    for linha in f:
+        linha = linha.strip()
+        if linha:
+            valores = linha.split(',')
+            x,y = trataValores(valores)
+            W[x] = y
 w = {}					  #cria o dicionário w
 keys_W = W.keys()
 
 w[keys_W[0]] = W[keys_W[0]]
 w[keys_W[-1]] = W[keys_W[-1]]
 
-find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],count/2)
+count = 1024
+print find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],int(math.log(count,2)))
 
+for i in w:
+    print i,w[i]
 
 f.close()
