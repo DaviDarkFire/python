@@ -26,15 +26,17 @@ def calc_pip(W,x1,y1,x2,y2): #tem que passar count dividido por 2
 def pip(W, count): # tentativa com o código do github
     w = {}
 
-    for (dia, preco) in enumerate(W):
-        w[dia] = preco
-        if len(w) <= k:
+    for chave in W.keys():
+        w[chave] = W[chave]
+        if (len(w) <= count):
             continue
 
         miniv = sys.maxsize
         minij = 0
 
-        for j in range(1, len(w) - 1):
+        keys_w = w.keys()
+        for j in w[1:-1]:
+            
             d = distancia_vertical(ret[j - 1], ret[j], ret[j + 1]) #alterar
             if d < miniv:
                 miniv = d
@@ -59,14 +61,10 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             valores = linha.split(',')
             x,y = trataValores(valores)
             W[x] = y
+
+
 w = {}					  #cria o dicionário w
 keys_W = W.keys()
-
-w[keys_W[0]] = W[keys_W[0]]
-w[keys_W[-1]] = W[keys_W[-1]]
-
-count = 1024
-print find_pips(W,w,keys_W[0],W[keys_W[0]],keys_W[-1],W[keys_W[-1]],int(math.log(count,2)))
 
 for i in w:
     print i,w[i]
