@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import math
+import sys
 
-def distancia_vertical(x1,x2,x3,y1,y2,y3): #essa distância vertical retorna a distância do ponto analisado com relação
+def distancia_vertical(x1,y1,x2,y2,x3,y3): #essa distância vertical retorna a distância do ponto analisado com relação
     # à reta que liga os pips adjacentes deste ponto, assim o quão maior for a distância vertical, maior vai ser
     #a importância daquele ponto
     dv = (y1+(y2-y1)*((x3-x1)/(x2-x1)))-y3 #conta que determina a distância vertical
@@ -10,22 +11,21 @@ def distancia_vertical(x1,x2,x3,y1,y2,y3): #essa distância vertical retorna a d
         dv = dv*(-1)
     return dv
 
-def calc_pip(W,x1,y1,x2,y2): #tem que passar count dividido por 2
+def calc_pip(W,x1,y1,x2,y2): #função não usada
     keys_W = W.keys()
     i = keys_W.index(x1)
     j = keys_W.index(x2)
     dv = dv_aux = x_aux = y_aux = 0
     for k in keys_W[i:j+1]:
-        dv_aux = distancia_vertical(x1,x2,k,y1,y2,W[k])
+        dv_aux = distancia_vertical(x1,y1,x2,y2,k,W[k])
         if(dv_aux > dv):
             y_aux = W[k]
             dv = dv_aux
             x_aux = k
     return x_aux,y_aux
 
-def pip(W, count): # tentativa com o código do github
+def pip(W, count): # tentativa com o código do github, acho que foi
     w = {}
-
     for chave in W.keys():
         w[chave] = W[chave]
         if (len(w) <= count):
@@ -35,22 +35,32 @@ def pip(W, count): # tentativa com o código do github
         minij = 0
 
         keys_w = w.keys()
-        for j in w[1:-1]:
-            
-            d = distancia_vertical(ret[j - 1], ret[j], ret[j + 1]) #alterar
-            if d < miniv:
-                miniv = d
-                minij = j
+        ultimo = keys_w[-1]
+        for j, val in enumerate(keys_w):
+            if(j != 0 and val != ultimo):
+                x1 = keys_w[j-1] #to acessando uma posição na lista, essa posição da lista contém uma chave de um dicionário
+                y1 = w[keys_w[j-1]] #to usando a chave desse dicionário pra acessar o elemento que eu quero do dicionário
+                x2 = keys_w[j+1] #que locuuuuuuuuuura jão
+                y2 = w[keys_w[j+1]]
+                x3 = val
+                y3 = w[val]
+                d = distancia_vertical(x1,y1,x2,y2,x3,y3) #alterar
+                if (d < miniv):
+                    miniv = d
+                    minij = j
+            else:
+                continue
 
-        del w[minij]
 
+        del w[keys_w[minij]]
     return w
+
 
 def trataValores(valores):
     aux = valores[0].split(" ")
     val = aux[0]+aux[1]
 
-    return float(val), float(valores[1])
+    return int(val), float(valores[1])
 
 # Main
 W = {}
@@ -64,7 +74,8 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
 
 
 w = {}					  #cria o dicionário w
-keys_W = W.keys()
+
+w = pip(W,13)
 
 for i in w:
     print i,w[i]
