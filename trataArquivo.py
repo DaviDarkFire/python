@@ -13,9 +13,14 @@ with open('input.in') as f:
         if linha:
             valores = linha.split(',')
 
+
+
             a = valores[1]
             b = a.split("\"")
             c = ''.join(b)
+            d = c.split(" ")
+            c = d[0]+d[1]            
+
 
             s.write(c)
             s.write(',')

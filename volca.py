@@ -30,11 +30,20 @@ def iprice_min(w):				#função que retorna o endereço/dia do menor ponto
 			menor = w[i]
 	return indice_menor
 
+def trataValores(valores):
+    return int(valores[0]), float(valores[1])
 
-f = open("input.in", "r") #abre o arquivo de entradas
-w_mod = int(f.readline()) #le o |w|
-p = int(f.readline())     #le o p
-W = {1:1,2:20,3:-10,4:40,5:-50,6:60,7:70,8:80,9:-90,10:100}                    #cria o dicionario W
+
+with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
+    for linha in f:
+        linha = linha.strip()
+        if linha:
+            valores = linha.split(',')
+            x,y = trataValores(valores)
+            W[x] = y
+
+w_mod = 10                #le o |w|
+p =                       #le o p
 w = {}					  #cria o dicionário w
 v_max = {}                #cria o dicionario v_max
 v_min = {}                #cria o dicionario v_min
@@ -46,8 +55,6 @@ for i in W:						#inicializa os dicionários v_max, v_min, v_class
 	v_min[i] = 0
 	v_class[i] = "do_nothing"
 
-for linha in f:					#inicializa W com os valores de entrada
-    pass
 
 keys_W = W.keys()
 i = 0

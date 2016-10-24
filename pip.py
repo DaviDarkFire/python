@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import math
 import sys
+import collections
 
 def distancia_vertical(x1,y1,x2,y2,x3,y3): #essa distância vertical retorna a distância do ponto analisado com relação
     # à reta que liga os pips adjacentes deste ponto, assim o quão maior for a distância vertical, maior vai ser
@@ -57,10 +58,7 @@ def pip(W, count): # tentativa com o código do github, acho que foi
 
 
 def trataValores(valores):
-    aux = valores[0].split(" ")
-    val = aux[0]+aux[1]
-
-    return int(val), float(valores[1])
+    return int(valores[0]), float(valores[1])
 
 # Main
 W = {}
@@ -75,9 +73,11 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
 
 w = {}					  #cria o dicionário w
 
-w = pip(W,13)
+w = pip(W,10)
 
-for i in w:
-    print i,w[i]
+od = collections.OrderedDict(sorted(w.items()))
+
+for i in od:
+    print i,",",od[i]
 
 f.close()
