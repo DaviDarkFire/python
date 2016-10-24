@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import collections
 
 def slide(W,w,w_mod,j):			#o parâmetro flag indica se eu vou ter que preencher o w completamente, ou se vou precisar apenas adicionar um dia e excluir o primeiro
 	keys_W = W.keys()			#faz uma lista com as chaves do W
@@ -43,7 +44,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             W[x] = y
 
 w_mod = 50                #le o |w|
-p = 1                     #le o p
+p = 0.7                     #le o p
 w = {}					  #cria o dicionário w
 v_max = {}                #cria o dicionario v_max
 v_min = {}                #cria o dicionario v_min
@@ -71,8 +72,14 @@ for i in v_max:					                    #preenche o dicionário v_class com as i
     if v_min[i] > limit:
         v_class[i] = "buy"
 
-for i in v_class:
-	print v_class[i]
+s = {}
+for i in v_class: #preenche o dicionário s com os valores de máximo e mínimo
+	if(v_class[i] == "sell" or v_class[i] == "buy"):
+		s[i] = W[i]
+
+od = collections.OrderedDict(sorted(s.items())) #ordena os valores pelo índice
+for i in od: #imprime os pontos de máximo e mínimo na tela
+	print i,",",od[i]
 
 
 f.close()                                          #fecha o arquivo de entrada

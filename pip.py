@@ -25,7 +25,7 @@ def calc_pip(W,x1,y1,x2,y2): #função não usada
             x_aux = k
     return x_aux,y_aux
 
-def pip(W, count): # tentativa com o código do github, acho que foi
+def pip(W, count): #função que calcula a quantidade de pips dada por count
     w = {}
     for chave in W.keys():
         w[chave] = W[chave]
@@ -57,7 +57,7 @@ def pip(W, count): # tentativa com o código do github, acho que foi
     return w
 
 
-def trataValores(valores):
+def trataValores(valores): #transforma os literais em valores inteiro e float, respectivamente, pra uso posterior
     return int(valores[0]), float(valores[1])
 
 # Main
@@ -73,11 +73,11 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
 
 w = {}					  #cria o dicionário w
 
-w = pip(W,10)
+w = pip(W,10) #pede 10 pips a partir dos valores passados em W
 
-od = collections.OrderedDict(sorted(w.items()))
+od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-for i in od:
+for i in od: #mostra os pips na tela
     print i,",",od[i]
 
-f.close()
+f.close() #fecha o arquivo
