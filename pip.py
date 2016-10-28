@@ -87,24 +87,25 @@ for i in od:
     a = mdates.datestr2num(str(i))
     dias.append(j)
     dias[j] = mdates.num2date(a)
+    print dias[j]
     valores.append(j)
     valores[j] = od[i]
     j = j+1
 
 
-hfmt = mdates.DateFormatter('%y/%m/%d %H:%M')
+hfmt = mdates.DateFormatter('%d/%m/%Y')
 
 fig, ax = plt.subplots()
 
 ax.xaxis.set_major_formatter(hfmt)
 
-plt.plot_date(x=dias, y=valores, fmt="r-")
+plt.plot_date(x=dias, y=valores, fmt="o-")
 
 plt.title("Data vs Valor")
 plt.xlabel("Data")
 plt.ylabel("Valor")
 
-plt.xticks(rotation=70)
+plt.xticks(rotation=60)
 plt.tight_layout()
 plt.grid(True)
 plt.show()

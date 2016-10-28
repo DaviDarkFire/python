@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import collections
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 def slide(W,w,w_mod,j):			#o parâmetro flag indica se eu vou ter que preencher o w completamente, ou se vou precisar apenas adicionar um dia e excluir o primeiro
 	keys_W = W.keys()			#faz uma lista com as chaves do W
@@ -78,8 +81,37 @@ for i in v_class: #preenche o dicionário s com os valores de máximo e mínimo
 		s[i] = W[i]
 
 od = collections.OrderedDict(sorted(s.items())) #ordena os valores pelo índice
-for i in od: #imprime os pontos de máximo e mínimo na tela
-	print i,",",od[i]
+
+dias = []
+valores = []
+j = 0
+for i in od:
+    a = mdates.datestr2num(str(i))
+    dias.append(j)
+    dias[j] = mdates.num2date(a)
+    print dias[j]
+    valores.append(j)
+    valores[j] = od[i]
+    j = j+1
+
+
+hfmt = mdates.DateFormatter('%d/%m/%Y')
+
+fig, ax = plt.subplots()
+
+ax.xaxis.set_major_formatter(hfmt)
+
+plt.plot_date(x=dias, y=valores, fmt="o-")
+
+plt.title("Data vs Valor")
+plt.xlabel("Data")
+plt.ylabel("Valor")
+
+plt.xticks(rotation=60)
+plt.tight_layout()
+plt.grid(True)
+plt.show()
+
 
 
 f.close()                                          #fecha o arquivo de entrada
