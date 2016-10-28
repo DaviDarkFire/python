@@ -3,6 +3,9 @@
 import math
 import sys
 import collections
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 def distancia_vertical(x1,y1,x2,y2,x3,y3): #essa distância vertical retorna a distância do ponto analisado com relação
     # à reta que liga os pips adjacentes deste ponto, assim o quão maior for a distância vertical, maior vai ser
@@ -77,7 +80,34 @@ w = pip(W,10) #pede 10 pips a partir dos valores passados em W
 
 od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-for i in od: #mostra os pips na tela
-    print i,",",od[i]
+dias = []
+valores = []
+j = 0
+for i in od:
+    a = mdates.datestr2num(str(i))
+    dias.append(j)
+    dias[j] = mdates.num2date(a)
+    valores.append(j)
+    valores[j] = od[i]
+    j = j+1
+
+
+hfmt = mdates.DateFormatter('%y/%m/%d %H:%M')
+
+fig, ax = plt.subplots()
+
+ax.xaxis.set_major_formatter(hfmt)
+
+plt.plot_date(x=dias, y=valores, fmt="r-")
+
+plt.title("Data vs Valor")
+plt.xlabel("Data")
+plt.ylabel("Valor")
+
+plt.xticks(rotation=70)
+plt.tight_layout()
+plt.grid(True)
+plt.show()
+
 
 f.close() #fecha o arquivo
