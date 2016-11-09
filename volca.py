@@ -5,23 +5,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-def slide(W,w,w_mod,j):			#o parâmetro flag indica se eu vou ter que preencher o w completamente, ou se vou precisar apenas adicionar um dia e excluir o primeiro
-	keys_W = W.keys()			#faz uma lista com as chaves do W
-	for i in keys_W[j:w_mod+j+1]:	#preenche  a janela w com os valores de W
-		w[i] = W[i]
-	return w    					#retorna a janela atualizada
+def slide(W,keys_W,w,keys_w,w_mod,j,flag):
+	if(flag == 1):
+		l = 0
+		for i in keys_W:
+			if(l == w_mod):
+				break
+			w[i] = W[i]
+			print i, w[i]
+			l = l+1
+	else:
+		del w[keys_w[0]]
+		w[keys_W[j]] = W[keys_W[j]]
 
 
 
-def iprice_max(w):					#função que retorna o endereço/dia do maior ponto
-	keys_w = w.keys()
-	maior = w[keys_w[0]]
-	indice_maior = keys_w[0]
-	for i in w:
-		if w[i] > maior:
-			indice_maior = i
-			maior = w[i]
-	return indice_maior
+def iprice_max(w):		#função que retorna o endereço/dia do maior ponto
+    keys_w = w.keys()
+    maior = w[keys_w[0]]
+    indice_maior = keys_w[0]
+    for i in w:
+        if w[i] > maior:
+            indice_maior = i
+            maior = w[i]
+    return indice_maior
 
 
 def iprice_min(w):				#função que retorna o endereço/dia do menor ponto
@@ -46,7 +53,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             x,y = trataValores(valores)
             W[x] = y
 
-w_mod = 50                #le o |w|
+w_mod = 10                #le o |w|
 p = 0.7                     #le o p
 w = {}					  #cria o dicionário w
 v_max = {}                #cria o dicionario v_max
@@ -61,9 +68,13 @@ for i in W:						#inicializa os dicionários v_max, v_min, v_class
 
 
 keys_W = W.keys()
+keys_W.sort()
+flag = 1
 i = 0
-while i < len(keys_W)-w_mod:	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
-	slide(W,w,w_mod,i)
+while i < len(keys_W):	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
+	keys_w = w.keys()
+	slide(W,keys_W,w,keys_w,w_mod,i,flag)
+	flag = 0
 	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
 	v_min[iprice_min(w)] = v_min[iprice_min(w)]+1
 	i = i + 1
@@ -89,7 +100,6 @@ for i in od:
     a = mdates.datestr2num(str(i))
     dias.append(j)
     dias[j] = mdates.num2date(a)
-    print dias[j]
     valores.append(j)
     valores[j] = od[i]
     j = j+1

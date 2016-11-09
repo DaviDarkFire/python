@@ -76,7 +76,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
 
 w = {}					  #cria o dicionário w
 
-w = pip(W,10) #pede 10 pips a partir dos valores passados em W
+w = pip(W,50) #pede 10 pips a partir dos valores passados em W
 
 od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
