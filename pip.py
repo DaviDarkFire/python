@@ -6,6 +6,7 @@ import collections
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import time
 
 def distancia_vertical(x1,y1,x2,y2,x3,y3): #essa distância vertical retorna a distância do ponto analisado com relação
     # à reta que liga os pips adjacentes deste ponto, assim o quão maior for a distância vertical, maior vai ser
@@ -64,6 +65,7 @@ def trataValores(valores): #transforma os literais em valores inteiro e float, r
     return int(valores[0]), float(valores[1])
 
 # Main
+start_time = time.time()
 W = {}
 with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
     for linha in f:
@@ -108,7 +110,7 @@ plt.ylabel("Valor")
 plt.xticks(rotation=60)
 plt.tight_layout()
 plt.grid(True)
+print time.time() - start_time
 plt.show()
-
 
 f.close() #fecha o arquivo

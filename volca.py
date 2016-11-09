@@ -4,6 +4,7 @@ import collections
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import time
 from operator import itemgetter
 
 def slide(W,keys_W,w,keys_w,w_mod,j,flag):
@@ -44,6 +45,8 @@ def iprice_min(w):				#função que retorna o endereço/dia do menor ponto
 def trataValores(valores):
     return int(valores[0]), float(valores[1])
 
+#Main
+start_time = time.time()
 W = {}
 with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
     for linha in f:
@@ -140,8 +143,7 @@ plt.ylabel("Valor")
 plt.xticks(rotation=60)
 plt.tight_layout()
 plt.grid(True)
+print time.time() - start_time
 plt.show()
 
-
-
-f.close()                                          #fecha o arquivo de entrada
+f.close()#fecha o arquivo de entrada
