@@ -4,6 +4,7 @@ import collections
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from operator import itemgetter
 
 def slide(W,keys_W,w,keys_w,w_mod,j,flag):
 	if(flag == 1):
@@ -11,8 +12,7 @@ def slide(W,keys_W,w,keys_w,w_mod,j,flag):
 		for i in keys_W:
 			if(l == w_mod):
 				break
-			w[i] = W[i]
-			print i, w[i]
+			w[i] = W[i]			
 			l = l+1
 	else:
 		del w[keys_w[0]]
@@ -53,8 +53,8 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             x,y = trataValores(valores)
             W[x] = y
 
-w_mod = 10                #le o |w|
-p = 0.7                     #le o p
+w_mod = 50                #le o |w|
+p = 1                     #le o p
 w = {}					  #cria o dicionário w
 v_max = {}                #cria o dicionario v_max
 v_min = {}                #cria o dicionario v_min
@@ -71,8 +71,8 @@ keys_W = W.keys()
 keys_W.sort()
 flag = 1
 i = 0
-while i < len(keys_W):	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
-	keys_w = w.keys()
+while i < len(keys_W):
+	keys_w = w.keys()	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar	
 	slide(W,keys_W,w,keys_w,w_mod,i,flag)
 	flag = 0
 	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
@@ -80,18 +80,37 @@ while i < len(keys_W):	                #laço que vai levando a janela w e votan
 	i = i + 1
 
 
-for i in v_max:					                    #preenche o dicionário v_class com as informações de compra e venda
-    if v_max[i] > limit:
-        v_class[i] = "sell"
-    if v_min[i] > limit:
-        v_class[i] = "buy"
+# for i in v_max:					                    #preenche o dicionário v_class com as informações de compra e venda, não usado
+#     if v_max[i] > limit:
+#         v_class[i] = "sell"
+#     if v_min[i] > limit:
+#         v_class[i] = "buy"
 
 s = {}
-for i in v_class: #preenche o dicionário s com os valores de máximo e mínimo
-	if(v_class[i] == "sell" or v_class[i] == "buy"):
-		s[i] = W[i]
+od = {}
+v_max = collections.OrderedDict(sorted(v_max.items(), key=itemgetter(1), reverse=True)) #ordena o dicionario v_max pelos valores
+v_min = collections.OrderedDict(sorted(v_min.items(), key=itemgetter(1), reverse=True)) #ordena o dicionario v_min pelos valores
 
-od = collections.OrderedDict(sorted(s.items())) #ordena os valores pelo índice
+l = 0
+for i in v_min:
+	if (l < w_mod/2):
+		od[i] = v_min[i]		
+		l += 1
+	else:
+		break
+l = 0
+for i in v_max:
+	if (l < w_mod/2):
+		od[i] = v_max[i]		
+		l += 1
+	else:
+		break		
+		
+od = collections.OrderedDict(sorted(od.items())) #ordena os valores pelo índice
+
+for i in od:
+	od[i] = W[i]
+
 
 dias = []
 valores = []
@@ -100,6 +119,7 @@ for i in od:
     a = mdates.datestr2num(str(i))
     dias.append(j)
     dias[j] = mdates.num2date(a)
+    print dias[j]
     valores.append(j)
     valores[j] = od[i]
     j = j+1
