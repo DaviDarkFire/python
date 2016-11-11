@@ -7,17 +7,21 @@ import matplotlib.dates as mdates
 import time
 from operator import itemgetter
 
-def slide(W,keys_W,w,keys_w,w_mod,j,flag):
+def slide(W,keys_W,w,w_mod,j,flag):
 	if(flag == 1):
 		l = 0
 		for i in keys_W:
 			if(l == w_mod):
 				break
-			w[i] = W[i]			
+			w[i] = W[i]
 			l = l+1
+		w = collections.OrderedDict(sorted(w.items()))
 	else:
-		del w[keys_w[0]]
-		w[keys_W[j]] = W[keys_W[j]]
+		del w[w.keys()[0]]
+		w[j] = W[j]
+		w = collections.OrderedDict(sorted(w.items()))
+		print w
+		print "\n"
 
 
 
@@ -55,7 +59,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             valores = linha.split(',')
             x,y = trataValores(valores)
             W[x] = y
-
+W = collections.OrderedDict(sorted(W.items()))
 w_mod = 50                #le o |w|
 p = 1                     #le o p
 w = {}					  #cria o dicionário w
@@ -74,9 +78,8 @@ keys_W = W.keys()
 keys_W.sort()
 flag = 1
 i = 0
-while i < len(keys_W):
-	keys_w = w.keys()	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar	
-	slide(W,keys_W,w,keys_w,w_mod,i,flag)
+while i in W:           #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
+	slide(W,keys_W,w,w_mod,i,flag)
 	flag = 0
 	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
 	v_min[iprice_min(w)] = v_min[iprice_min(w)]+1
@@ -97,18 +100,18 @@ v_min = collections.OrderedDict(sorted(v_min.items(), key=itemgetter(1), reverse
 l = 0
 for i in v_min:
 	if (l < w_mod/2):
-		od[i] = v_min[i]		
+		od[i] = v_min[i]
 		l += 1
 	else:
 		break
 l = 0
 for i in v_max:
 	if (l < w_mod/2):
-		od[i] = v_max[i]		
+		od[i] = v_max[i]
 		l += 1
 	else:
-		break		
-		
+		break
+
 od = collections.OrderedDict(sorted(od.items())) #ordena os valores pelo índice
 
 for i in od:
@@ -122,7 +125,7 @@ for i in od:
     a = mdates.datestr2num(str(i))
     dias.append(j)
     dias[j] = mdates.num2date(a)
-    print dias[j]
+    #print dias[j]
     valores.append(j)
     valores[j] = od[i]
     j = j+1

@@ -75,7 +75,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             x,y = trataValores(valores)
             W[x] = y
 
-
+W = collections.OrderedDict(sorted(W.items()))
 w = {}					  #cria o dicionário w
 
 w = pip(W,50) #pede 10 pips a partir dos valores passados em W
@@ -89,7 +89,7 @@ for i in od:
     a = mdates.datestr2num(str(i))
     dias.append(j)
     dias[j] = mdates.num2date(a)
-    print dias[j]
+    #print dias[j]
     valores.append(j)
     valores[j] = od[i]
     j = j+1

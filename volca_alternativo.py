@@ -2,64 +2,40 @@
 # -*- coding: utf-8 -*-
 import collections
 import numpy as np
-import csv
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
-import sys
 from operator import itemgetter
 
 
-def load():
-		t = csv.reader(open(sys.argv[1]), delimiter = ',')
-		v = []
-		for row in t:
-			v.append(row)
-			v[][]			
-
-		v.pop(0)
-		dataset = None
-		dataset = np.matrix(v)
-		print dataset		
-		return dataset
-
-
-def slide(W,keys_W,w,keys_w,w_mod,j,flag):
+def slide(W_valor,W_data,w_valor,w_data,w_mod,data,valor,flag):
 	if(flag == 1):
-		l = 0
-		for i in keys_W:
-			if(l == w_mod):
-				break
-			w[i] = W[i]			
-			l = l+1
+		for i in range(w_mod):
+			w_valor[i] = W_valor[i]
+			w_data[i] = W_data[i]
 	else:
-		del w[w.keys()[0]]
-		w[j] = W[j]
-		#w = collections.OrderedDict(sorted(w.items()))
-		#print w
-		#print "\n"
-
-
+		w_valor.popleft()
+		w_data.popleft()
+		w_valor.append(valor)
+		w_data.append(data)
 
 def iprice_max(w):		#função que retorna o endereço/dia do maior ponto
-    keys_w = w.keys()
-    maior = w[keys_w[0]]
-    indice_maior = keys_w[0]
-    for i in w:
+    maior = w[0]
+    indice_maior = 0
+    for i, val in enumerate(w):
         if w[i] > maior:
             indice_maior = i
-            maior = w[i]
+            maior = val
     return indice_maior
 
 
 def iprice_min(w):				#função que retorna o endereço/dia do menor ponto
-	keys_w = w.keys()
-	menor = w[keys_w[0]]
-	indice_menor = keys_w[0]
-	for i in w:
+	menor = w[0]
+	indice_menor = 0
+	for i, val in enumerate(w):
 		if w[i] < menor:
 			indice_menor = i
-			menor = w[i]
+			menor = val
 	return indice_menor
 
 def trataValores(valores):
@@ -67,43 +43,43 @@ def trataValores(valores):
 
 #Main
 start_time = time.time()
-W = {}
+
+W_data = []
+W_valor = []
+
 with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
     for linha in f:
         linha = linha.strip()
         if linha:
             valores = linha.split(',')
             x,y = trataValores(valores)
-            W[x] = y
+            W_data.append(x)
+			W_valor.append(y)
 
 w_mod = 2                 #le o |w|
 p = 1                     #le o p
-w = {}					  #cria o dicionário w
-v_max = {}                #cria o dicionario v_max
-v_min = {}                #cria o dicionario v_min
-v_class = {}              #cria o dicionario v_class
+w_data = []
+w_valor = []
+w_data = collections.deque(w_data)
+w_valor = collections.deque(w_valor)
+v_max = []                #cria o dicionario v_max
+v_min = []                #cria o dicionario v_min
 limit = w_mod-w_mod*p     #inicializa a variável limit
 
-load()
-
-# for i in W:						#inicializa os dicionários v_max, v_min, v_class
-# 	v_max[i] = 0
-# 	v_min[i] = 0
-# 	v_class[i] = "do_nothing"
-# 	print i, W[i]
+for i in W:						#inicializa os dicionários v_max, v_min, v_class
+	v_max.append(0)
+	v_min.append(0)
 
 
-# keys_W = W.keys()
-# keys_W.sort()
-# flag = 1
-# i = 0
-# for i in W:
-# 	keys_w = w.keys()	                #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar	
-# 	slide(W,keys_W,w,keys_w,w_mod,i,flag)
-# 	flag = 0
-# 	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
-# 	v_min[iprice_min(w)] = v_min[iprice_min(w)]+1
-# 	i = i + 1
+flag = 1
+i = 0
+for i, data in enumerate(W_data): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
+	valor = W_valor[i]
+	slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag)
+	flag = 0
+	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
+	v_min[iprice_min(w)] = v_min[iprice_min(w)]+1
+	i = i + 1
 
 
 # s = {}
@@ -114,18 +90,18 @@ load()
 # l = 0
 # for i in v_min:
 # 	if (l < w_mod/2):
-# 		od[i] = v_min[i]		
+# 		od[i] = v_min[i]
 # 		l += 1
 # 	else:
 # 		break
 # l = 0
 # for i in v_max:
 # 	if (l < w_mod/2):
-# 		od[i] = v_max[i]		
+# 		od[i] = v_max[i]
 # 		l += 1
 # 	else:
-# 		break		
-		
+# 		break
+
 # od = collections.OrderedDict(sorted(od.items())) #ordena os valores pelo índice
 
 # for i in od:
