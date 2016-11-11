@@ -5,10 +5,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
+from bisect import bisect
 from operator import itemgetter
 
 
-def slide(W_valor,W_data,w_valor,w_data,w_mod,data,valor,flag):
+def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag):
 	if(flag == 1):
 		for i in range(w_mod):
 			w_valor[i] = W_valor[i]
@@ -19,24 +20,24 @@ def slide(W_valor,W_data,w_valor,w_data,w_mod,data,valor,flag):
 		w_valor.append(valor)
 		w_data.append(data)
 
-def iprice_max(w):		#função que retorna o endereço/dia do maior ponto
-    maior = w[0]
+def iprice_max(w_valor,w_data):		#função que retorna o endereço/dia do maior ponto
+    maior = w_valor[0]
     indice_maior = 0
-    for i, val in enumerate(w):
-        if w[i] > maior:
+    for i, val in enumerate(w_valor):
+        if w_valor[i] > maior:
             indice_maior = i
             maior = val
-    return indice_maior
+    return w_data[indice_maior]
 
 
-def iprice_min(w):				#função que retorna o endereço/dia do menor ponto
-	menor = w[0]
+def iprice_min(w_valor,w_data):				#função que retorna o endereço/dia do menor ponto
+	menor = w_valor[0]
 	indice_menor = 0
-	for i, val in enumerate(w):
-		if w[i] < menor:
+	for i, val in enumerate(w_valor):
+		if w_valor[i] < menor:
 			indice_menor = i
 			menor = val
-	return indice_menor
+	return w_data[indice_menor]
 
 def trataValores(valores):
     return int(valores[0]), float(valores[1])
@@ -72,37 +73,29 @@ for i in W:						#inicializa os dicionários v_max, v_min, v_class
 
 
 flag = 1
-i = 0
 for i, data in enumerate(W_data): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
 	valor = W_valor[i]
 	slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag)
 	flag = 0
-	v_max[iprice_max(w)] = v_max[iprice_max(w)]+1
-	v_min[iprice_min(w)] = v_min[iprice_min(w)]+1
-	i = i + 1
 
+	i_M = bisect(W_data,iprice_max(w_valor,w_data))-1
+	i_m = bisect(W_data,iprice_min(w_valor,w_data))-1
 
-# s = {}
-# od = {}
-# v_max = collections.OrderedDict(sorted(v_max.items(), key=itemgetter(1), reverse=True)) #ordena o dicionario v_max pelos valores
-# v_min = collections.OrderedDict(sorted(v_min.items(), key=itemgetter(1), reverse=True)) #ordena o dicionario v_min pelos valores
+	v_max[i_M] = v_max[i_M]+1
+	v_min[i_m] = v_min[i_m]+1
 
-# l = 0
-# for i in v_min:
-# 	if (l < w_mod/2):
-# 		od[i] = v_min[i]
-# 		l += 1
-# 	else:
-# 		break
-# l = 0
-# for i in v_max:
-# 	if (l < w_mod/2):
-# 		od[i] = v_max[i]
-# 		l += 1
-# 	else:
-# 		break
+od = []
+for i, val in enumerate(v_min):
+	if (i < w_mod/2):
+		od.append(val)
+	else:
+		break
 
-# od = collections.OrderedDict(sorted(od.items())) #ordena os valores pelo índice
+for i, val in enumerate(v_max):
+	if (i < w_mod/2):
+		od.append(val)		
+	else:
+		break
 
 # for i in od:
 # 	od[i] = W[i]
