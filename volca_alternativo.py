@@ -12,8 +12,8 @@ from operator import itemgetter
 def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag):
 	if(flag == 1):
 		for i in range(w_mod):
-			w_valor[i] = W_valor[i]
-			w_data[i] = W_data[i]
+			w_valor.append(W_valor[i])
+			w_data.append(W_data[i])
 	else:
 		w_valor.popleft()
 		w_data.popleft()
@@ -55,9 +55,9 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             valores = linha.split(',')
             x,y = trataValores(valores)
             W_data.append(x)
-			W_valor.append(y)
+            W_valor.append(y)
 
-w_mod = 2                 #le o |w|
+w_mod = 50                 #le o |w|
 p = 1                     #le o p
 w_data = []
 w_valor = []
@@ -67,7 +67,7 @@ v_max = []                #cria o dicionario v_max
 v_min = []                #cria o dicionario v_min
 limit = w_mod-w_mod*p     #inicializa a variável limit
 
-for i in W:						#inicializa os dicionários v_max, v_min, v_class
+for i in W_data:						#inicializa os dicionários v_max, v_min, v_class
 	v_max.append(0)
 	v_min.append(0)
 
@@ -84,18 +84,24 @@ for i, data in enumerate(W_data): #laço que vai levando a janela w e votando no
 	v_max[i_M] = v_max[i_M]+1
 	v_min[i_m] = v_min[i_m]+1
 
-od = []
-for i, val in enumerate(v_min):
-	if (i < w_mod/2):
-		od.append(val)
-	else:
-		break
 
-for i, val in enumerate(v_max):
-	if (i < w_mod/2):
-		od.append(val)		
-	else:
-		break
+for i, data in enumerate(v_min):
+	print i, data
+
+# od_data = []
+# od_valor = []
+
+# for i, val in enumerate(v_min):
+# 	if (i < w_mod/2):
+# 		od.append(W_valor[i])
+# 	else:
+# 		break
+
+# for i, val in enumerate(v_max):
+# 	if (i < w_mod/2):
+# 		od.append(W_valor[i])		
+# 	else:
+# 		break
 
 # for i in od:
 # 	od[i] = W[i]
