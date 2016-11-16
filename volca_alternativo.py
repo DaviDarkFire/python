@@ -83,29 +83,6 @@ for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e 
 	v_max[i_M] = v_max[i_M]+1
 	v_min[i_m] = v_min[i_m]+1
 
-
-for i, data in enumerate(v_max):
-	print i, data
-
-# od_data = []
-# od_valor = []
-
-# for i, val in enumerate(v_min):
-# 	if (i < w_mod/2):
-# 		od.append(W_valor[i])
-# 	else:
-# 		break
-
-# for i, val in enumerate(v_max):
-# 	if (i < w_mod/2):
-# 		od.append(W_valor[i])		
-# 	else:
-# 		break
-
-# for i in od:
-# 	od[i] = W[i]
-
-
 # dias = []
 # valores = []
 # j = 0
