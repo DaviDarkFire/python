@@ -83,25 +83,25 @@ for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e 
 	v_max[i_M] = v_max[i_M]+1
 	v_min[i_m] = v_min[i_m]+1
 
-order_max = np.empty([len(W_data),3])
-order_min = np.empty([len(W_data),3])
 
-for i in range(len(W_data)):
-	order_max[i][0] = W_data[i]
-	order_min[i][0] = W_data[i]
+# order_max = np.empty([len(W_data),3])
+# order_min = np.empty([len(W_data),3])
 
-	order_max[i][1] = W_valor[i]
-	order_min[i][1] = W_valor[i]
+# for i in range(len(W_data)):
+# 	order_max[i][0] = W_data[i]
+# 	order_min[i][0] = W_data[i]
 
-	order_max[i][2] = v_max[i]
-	order_min[i][2] = v_min[i]
+# 	order_max[i][1] = W_valor[i]
+# 	order_min[i][1] = W_valor[i]
+
+# 	order_max[i][2] = v_max[i]
+# 	order_min[i][2] = v_min[i]
 
 
-order_max = order_max.sort(key=lambda x: x[2])
-order_max = order_min.sort(key=lambda x: x[2])
+# order_max[order_max[:,3].argsort()]
 
-for i in range(len(order_max)):
-	print order_max[i][0],"     ",order_max[i][1],"     ",order_max[i][2]
+# for i in range(len(order_max)):
+# 	print order_max[i][0],"     ",order_max[i][1],"     ",order_max[i][2]
 
 
 # tamanho_order = len(order_max)-1
