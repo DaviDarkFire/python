@@ -96,21 +96,27 @@ for i in range(len(W_data)):
 	order_max[i][2] = v_max[i]
 	order_min[i][2] = v_min[i]
 
-order_max = np.sort(order, axis=-1, kind='quicksort', order=None)
-order_min = np.sort(order, axis=-1, kind='quicksort', order=None)
 
-tamanho_order = len(order_max)
-tamanho_ir = len(order_max)-(w_mod/2)
+order_max = order_max.sort(key=lambda x: x[2])
+order_max = order_min.sort(key=lambda x: x[2])
 
-od = {}
-
-for i in xrange(tamanho_order,tamanho_ir,-1):
+for i in range(len(order_max)):
+	print order_max[i][0],"     ",order_max[i][1],"     ",order_max[i][2]
 
 
+# tamanho_order = len(order_max)-1
+# tamanho_ir = len(order_max)-(w_mod/2)
 
+# od = {}
 
+# for i in xrange(tamanho_order,tamanho_ir,-1):
+# 	od[order_max[i][2]] = order_max[i][1]
+# 	od[order_min[i][2]] = order_min[i][1]
 
+# od = collections.OrderedDict(sorted(od.items()))
 
+# for i in od:
+# 	print i, od[i]
 
 # dias = []
 # valores = []
@@ -119,7 +125,7 @@ for i in xrange(tamanho_order,tamanho_ir,-1):
 #     a = mdates.datestr2num(str(i))
 #     dias.append(j)
 #     dias[j] = mdates.num2date(a)
-#     #print dias[j]
+#     print dias[j]
 #     valores.append(j)
 #     valores[j] = od[i]
 #     j = j+1
