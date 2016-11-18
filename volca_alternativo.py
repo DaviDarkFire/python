@@ -78,10 +78,39 @@ for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e 
 	flag = 0
 
 	i_M = iprice_max(w_valor,w_data)+i
-	i_m = iprice_min(w_valor,w_data)+i	
+	i_m = iprice_min(w_valor,w_data)+i
 
 	v_max[i_M] = v_max[i_M]+1
 	v_min[i_m] = v_min[i_m]+1
+
+order_max = np.empty([len(W_data),3])
+order_min = np.empty([len(W_data),3])
+
+for i in range(len(W_data)):
+	order_max[i][0] = W_data[i]
+	order_min[i][0] = W_data[i]
+
+	order_max[i][1] = W_valor[i]
+	order_min[i][1] = W_valor[i]
+
+	order_max[i][2] = v_max[i]
+	order_min[i][2] = v_min[i]
+
+order_max = np.sort(order, axis=-1, kind='quicksort', order=None)
+order_min = np.sort(order, axis=-1, kind='quicksort', order=None)
+
+tamanho_order = len(order_max)
+tamanho_ir = len(order_max)-(w_mod/2)
+
+od = {}
+
+for i in xrange(tamanho_order,tamanho_ir,-1):
+
+
+
+
+
+
 
 # dias = []
 # valores = []
