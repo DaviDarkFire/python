@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
+import heapq
+import operator
 
 
 def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag):
@@ -40,6 +42,13 @@ def iprice_min(w_valor,w_data):				#função que retorna o endereço/dia do meno
 def trataValores(valores):
     return int(valores[0]), float(valores[1])
 
+# def retorna_n_maiores(lista,n):
+# 	l = [0]*n
+# 	for i, val in enumerate(lista):
+# 		if()
+
+
+
 #Main
 start_time = time.time()
 
@@ -55,7 +64,7 @@ with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de 
             W_data.append(x)
             W_valor.append(y)
 
-w_mod = 50                 #le o |w|
+w_mod = 50               #le o |w|
 p = 1                     #le o p
 w_data = []
 w_valor = []
@@ -83,70 +92,67 @@ for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e 
 	v_max[i_M] = v_max[i_M]+1
 	v_min[i_m] = v_min[i_m]+1
 
+temp_max = []
+temp_min = []
 
-# order_max = np.empty([len(W_data),3])
-# order_min = np.empty([len(W_data),3])
+for i, val in enumerate(v_max):
+	if(val == w_mod):
+		temp_max.append(i)
+	if(v_min[i] == w_mod):
+		temp_min.append(i)
 
-# for i in range(len(W_data)):
-# 	order_max[i][0] = W_data[i]
-# 	order_min[i][0] = W_data[i]
+od = {}
+for i in range(0,len(temp_max),len(temp_max)/w_mod):
+	od[W_data[temp_max[i]]] = W_valor[temp_max[i]]
 
-# 	order_max[i][1] = W_valor[i]
-# 	order_min[i][1] = W_valor[i]
+for i in range(0,len(temp_min),len(temp_min)/w_mod):
+	od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
 
-# 	order_max[i][2] = v_max[i]
-# 	order_min[i][2] = v_min[i]
+# indice_maiores = sorted(range(len(v_max)), key=lambda i: v_max[i])[-w_mod/2:]
+# indice_menores = sorted(range(len(v_min)), key=lambda i: v_min[i])[-w_mod/2:]
 
-
-# order_max[order_max[:,3].argsort()]
-
-# for i in range(len(order_max)):
-# 	print order_max[i][0],"     ",order_max[i][1],"     ",order_max[i][2]
-
-
-# tamanho_order = len(order_max)-1
-# tamanho_ir = len(order_max)-(w_mod/2)
-
-# od = {}
-
-# for i in xrange(tamanho_order,tamanho_ir,-1):
-# 	od[order_max[i][2]] = order_max[i][1]
-# 	od[order_min[i][2]] = order_min[i][1]
-
-# od = collections.OrderedDict(sorted(od.items()))
-
-# for i in od:
-# 	print i, od[i]
-
-# dias = []
-# valores = []
-# j = 0
-# for i in od:
-#     a = mdates.datestr2num(str(i))
-#     dias.append(j)
-#     dias[j] = mdates.num2date(a)
-#     print dias[j]
-#     valores.append(j)
-#     valores[j] = od[i]
-#     j = j+1
+# indice_maiores = zip(*heapq.nlargest(w_mod/2, enumerate(v_max), key=operator.itemgetter(1)))[0]
+# indice_menores = zip(*heapq.nlargest(w_mod/2, enumerate(v_min), key=operator.itemgetter(1)))[0]
 
 
-# hfmt = mdates.DateFormatter('%d/%m/%Y')
+#
+# for i, val in enumerate(indice_menores):
+# 	od[W_data[val]] = W_valor[val]
+#
+# for i, val in enumerate(indice_maiores):
+# 	od[W_data[val]] = W_valor[val]
+#
+od = collections.OrderedDict(sorted(od.items()))
 
-# fig, ax = plt.subplots()
+dias = []
+valores = []
+j = 0
+for i in od:
+    a = mdates.datestr2num(str(i))
+    dias.append(j)
+    dias[j] = mdates.num2date(a)
+    print dias[j]
+    valores.append(j)
+    valores[j] = od[i]
+    j = j+1
 
-# ax.xaxis.set_major_formatter(hfmt)
 
-# plt.plot_date(x=dias, y=valores, fmt="o-")
+hfmt = mdates.DateFormatter('%d/%m/%Y')
 
-# plt.title("Data vs Valor")
-# plt.xlabel("Data")
-# plt.ylabel("Valor")
+fig, ax = plt.subplots()
 
-# plt.xticks(rotation=60)
-# plt.tight_layout()
-# plt.grid(True)
-# print time.time() - start_time
-# plt.show()
+ax.xaxis.set_major_formatter(hfmt)
 
-# f.close()#fecha o arquivo de entrada
+plt.plot_date(x=dias, y=valores, fmt="o-")
+
+plt.title("Data vs Valor")
+plt.xlabel("Data")
+plt.ylabel("Valor")
+
+plt.xticks(rotation=60)
+plt.tight_layout()
+plt.grid(True)
+print time.time() - start_time
+plt.show()
+
+f.close()#fecha o arquivo de entrada
