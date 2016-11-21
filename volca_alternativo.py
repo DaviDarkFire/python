@@ -42,12 +42,6 @@ def iprice_min(w_valor,w_data):				#função que retorna o endereço/dia do meno
 def trataValores(valores):
     return int(valores[0]), float(valores[1])
 
-# def retorna_n_maiores(lista,n):
-# 	l = [0]*n
-# 	for i, val in enumerate(lista):
-# 		if()
-
-
 
 #Main
 start_time = time.time()
@@ -108,20 +102,7 @@ for i in range(0,len(temp_max),len(temp_max)/w_mod):
 for i in range(0,len(temp_min),len(temp_min)/w_mod):
 	od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
 
-# indice_maiores = sorted(range(len(v_max)), key=lambda i: v_max[i])[-w_mod/2:]
-# indice_menores = sorted(range(len(v_min)), key=lambda i: v_min[i])[-w_mod/2:]
 
-# indice_maiores = zip(*heapq.nlargest(w_mod/2, enumerate(v_max), key=operator.itemgetter(1)))[0]
-# indice_menores = zip(*heapq.nlargest(w_mod/2, enumerate(v_min), key=operator.itemgetter(1)))[0]
-
-
-#
-# for i, val in enumerate(indice_menores):
-# 	od[W_data[val]] = W_valor[val]
-#
-# for i, val in enumerate(indice_maiores):
-# 	od[W_data[val]] = W_valor[val]
-#
 od = collections.OrderedDict(sorted(od.items()))
 
 dias = []

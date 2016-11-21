@@ -64,53 +64,56 @@ def pip(W, count): #função que calcula a quantidade de pips dada por count
 def trataValores(valores): #transforma os literais em valores inteiro e float, respectivamente, pra uso posterior
     return int(valores[0]), float(valores[1])
 
-# Main
-start_time = time.time()
-W = {}
-with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
-    for linha in f:
-        linha = linha.strip()
-        if linha:
-            valores = linha.split(',')
-            x,y = trataValores(valores)
-            W[x] = y
+def gera_grafico(od):
+    dias = []
+    valores = []
+    j = 0
+    for i in od:
+        a = mdates.datestr2num(str(i))
+        dias.append(j)
+        dias[j] = mdates.num2date(a)
+        print dias[j]
+        valores.append(j)
+        valores[j] = od[i]
+        j = j+1
 
-W = collections.OrderedDict(sorted(W.items()))
-w = {}					  #cria o dicionário w
+    hfmt = mdates.DateFormatter('%d/%m/%Y')
 
-w = pip(W,50) #pede 10 pips a partir dos valores passados em W
+    fig, ax = plt.subplots()
 
-od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
+    ax.xaxis.set_major_formatter(hfmt)
 
-dias = []
-valores = []
-j = 0
-for i in od:
-    a = mdates.datestr2num(str(i))
-    dias.append(j)
-    dias[j] = mdates.num2date(a)
-    #print dias[j]
-    valores.append(j)
-    valores[j] = od[i]
-    j = j+1
+    plt.plot_date(x=dias, y=valores, fmt="o-")
 
+    plt.title("Data vs Valor")
+    plt.xlabel("Data")
+    plt.ylabel("Valor")
 
-hfmt = mdates.DateFormatter('%d/%m/%Y')
+    plt.xticks(rotation=60)
+    plt.tight_layout()
+    plt.grid(True)
+    print time.time() - start_time
+    plt.show()
 
-fig, ax = plt.subplots()
+def main():
+    start_time = time.time()
+    W = {}
+    with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
+        for linha in f:
+            linha = linha.strip()
+            if linha:
+                valores = linha.split(',')
+                x,y = trataValores(valores)
+                W[x] = y
 
-ax.xaxis.set_major_formatter(hfmt)
+    W = collections.OrderedDict(sorted(W.items()))
 
-plt.plot_date(x=dias, y=valores, fmt="o-")
+    w = {}					  #cria o dicionário w
 
-plt.title("Data vs Valor")
-plt.xlabel("Data")
-plt.ylabel("Valor")
+    w = pip(W,50) #pede 50 pips a partir dos valores passados em W
 
-plt.xticks(rotation=60)
-plt.tight_layout()
-plt.grid(True)
-print time.time() - start_time
-plt.show()
+    od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-f.close() #fecha o arquivo
+    return od
+    print time.time() - start_time
+    f.close() #fecha o arquivo
