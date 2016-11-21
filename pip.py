@@ -72,7 +72,7 @@ def gera_grafico(od):
         a = mdates.datestr2num(str(i))
         dias.append(j)
         dias[j] = mdates.num2date(a)
-        print dias[j]
+        #print dias[j]
         valores.append(j)
         valores[j] = od[i]
         j = j+1
@@ -91,8 +91,7 @@ def gera_grafico(od):
 
     plt.xticks(rotation=60)
     plt.tight_layout()
-    plt.grid(True)
-    print time.time() - start_time
+    plt.grid(True)    
     plt.show()
 
 def main():
@@ -114,6 +113,8 @@ def main():
 
     od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-    return od
     print time.time() - start_time
     f.close() #fecha o arquivo
+
+    return od
+    
