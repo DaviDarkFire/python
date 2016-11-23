@@ -113,7 +113,7 @@ def main():
 
     od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-    print time.time() - start_time
+    print "PIPS:",time.time() - start_time
     f.close() #fecha o arquivo
 
     return od

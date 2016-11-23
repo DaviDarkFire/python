@@ -135,6 +135,6 @@ def main():
 
 	od = collections.OrderedDict(sorted(od.items()))
 
-	print time.time() - start_time
+	print "VOLCA:",time.time() - start_time
 	f.close() #fecha o arquivo
 	return od
