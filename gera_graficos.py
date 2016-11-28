@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import pip
+import pips
 import volca_alternativo as volca
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -55,5 +55,6 @@ def gera_graficos(od_volca, od_pips):
     plt.show()
 
 
-
-gera_graficos(volca.main(), pip.main())
+od_volca, u, v = volca.main()
+od_pips, u, v = pips.main()
+gera_graficos(od_volca, od_pips)

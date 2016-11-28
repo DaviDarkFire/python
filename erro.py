@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import volca_alternativo
+import volca_alternativo as volca
+import pips
 
 def calc_reta(x1,y1,x2,y2): #função que calcula reta que liga os dois pontos mais próximos da simplificação
 	m = (float(y2-y1))/(float(x2-x1))
@@ -25,9 +26,11 @@ def calc_erro(od, W_data, W_valor):
             for l, val in enumerate(W_data[j:k+1]):
             	y = val*m+a
             	erro = abs(W_valor[l]-y)+erro
-    print erro
+    return erro
 
-
-calc_erro(volca_alternativo.main())
+od, W_data, W_valor = pips.main()
+print "ERRO PIPS:", calc_erro(od, W_data, W_valor)
+od, W_data, W_valor = volca.main()
+print "ERRO VOLCA:", calc_erro(od, W_data, W_valor)
 
 
