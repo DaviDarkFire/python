@@ -7,17 +7,26 @@ def calc_reta(x1,y1,x2,y2): #função que calcula reta que liga os dois pontos m
 	a = -m*float(x1)+float(y1)
 	return m, a
 
-def calc_erro(od):
+def calc_erro(od, W_data, W_valor):
     od_data = []
     od_valor = []
+    erro = 0
     for chave, valor in od.items():
         od_data.append(chave)
         od_valor.append(valor)
-
-    print len(od_data)
+    
     for i in range(0,len(od_data)):
-    	print i, od_data[i]
-                        
+    	if(i < len(od_data)-1):
+
+            j = W_data.index(od_data[i])
+            k = W_data.index(od_data[i+1])
+            m, a = calc_reta(od_data[i], od_valor[i], od_data[i+1], od_valor[i+1])
+
+            for l, val in enumerate(W_data[j:k+1]):
+            	y = val*m+a
+            	erro = abs(W_valor[l]-y)+erro
+    print erro
+
 
 calc_erro(volca_alternativo.main())
 
