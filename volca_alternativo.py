@@ -126,15 +126,16 @@ def main():
 			temp_min.append(i)
 
 	od = {}
-	for i in range(0,len(temp_max),len(temp_max)/w_mod):
+	for i in range(0,len(temp_max),2*len(temp_max)/w_mod):
 		od[W_data[temp_max[i]]] = W_valor[temp_max[i]]
 
-	for i in range(0,len(temp_min),len(temp_min)/w_mod):
+	for i in range(0,len(temp_min),2*len(temp_min)/w_mod):
 		od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
 
 
 	od = collections.OrderedDict(sorted(od.items()))
 
 	print "VOLCA:",time.time() - start_time
+
 	f.close() #fecha o arquivo
 	return od
