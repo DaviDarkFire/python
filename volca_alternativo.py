@@ -74,68 +74,68 @@ def gera_grafico(od):
     plt.show()    
 
 
-def main():
-	start_time = time.time()
+def main(w_mod):
+    start_time = time.time()
 
-	W_data = []
-	W_valor = []
-	with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
-		for linha in f:
-			linha = linha.strip()
-			if linha:
-				valores = linha.split(',')
-				x,y = trataValores(valores)
-				W_data.append(x)
-				W_valor.append(y)
+    W_data = []
+    W_valor = []
+    with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
+        for linha in f:
+            linha = linha.strip()
+            if linha:
+                valores = linha.split(',')
+                x,y = trataValores(valores)
+                W_data.append(x)
+                W_valor.append(y)
 
-	w_mod = 50               #le o |w|
-	p = 1                     #le o p
-	w_data = []
-	w_valor = []
-	w_data = collections.deque(w_data)
-	w_valor = collections.deque(w_valor)
-	v_max = []                #cria o dicionario v_max
-	v_min = []                #cria o dicionario v_min
-	limit = w_mod-w_mod*p     #inicializa a variável limit
+    #w_mod = 50               #le o |w|
+    p = 1                     #le o p
+    w_data = []
+    w_valor = []
+    w_data = collections.deque(w_data)
+    w_valor = collections.deque(w_valor)
+    v_max = []                #cria o dicionario v_max
+    v_min = []                #cria o dicionario v_min
+    limit = w_mod-w_mod*p     #inicializa a variável limit
 
-	for i in W_data:						#inicializa os dicionários v_max, v_min, v_class
-		v_max.append(0)
-		v_min.append(0)
-
-
-	flag = 1
-	tamanho = len(W_data)-w_mod+1
-	for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
-		valor = W_valor[i]
-		slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag)
-		flag = 0
-
-		i_M = iprice_max(w_valor,w_data)+i
-		i_m = iprice_min(w_valor,w_data)+i
-
-		v_max[i_M] = v_max[i_M]+1
-		v_min[i_m] = v_min[i_m]+1
-
-	temp_max = []
-	temp_min = []
-
-	for i, val in enumerate(v_max):
-		if(val == w_mod):
-			temp_max.append(i)
-		if(v_min[i] == w_mod):
-			temp_min.append(i)
-
-	od = {}
-	for i in range(0,len(temp_max),2*len(temp_max)/w_mod):
-		od[W_data[temp_max[i]]] = W_valor[temp_max[i]]
-
-	for i in range(0,len(temp_min),2*len(temp_min)/w_mod):
-		od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
+    for i in W_data:						#inicializa os dicionários v_max, v_min, v_class
+        v_max.append(0)
+        v_min.append(0)
 
 
-	od = collections.OrderedDict(sorted(od.items()))
+    flag = 1
+    tamanho = len(W_data)-w_mod+1
+    for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
+        valor = W_valor[i]
+        slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag)
+        flag = 0
 
-	print "ERRO VOLCA:",time.time() - start_time
+        i_M = iprice_max(w_valor,w_data)+i
+        i_m = iprice_min(w_valor,w_data)+i
 
-	f.close() #fecha o arquivo
-	return od, W_data, W_valor
+        v_max[i_M] = v_max[i_M]+1
+        v_min[i_m] = v_min[i_m]+1
+
+    temp_max = []
+    temp_min = []
+
+    for i, val in enumerate(v_max):
+        if(val == w_mod):
+            temp_max.append(i)
+        if(v_min[i] == w_mod):
+            temp_min.append(i)
+
+    od = {}
+    for i in range(0,len(temp_max),2*len(temp_max)/w_mod):
+        od[W_data[temp_max[i]]] = W_valor[temp_max[i]]
+
+    for i in range(0,len(temp_min),2*len(temp_min)/w_mod):
+        od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
+            
+    od = collections.OrderedDict(sorted(od.items()))
+    temp = time.time() - start_time
+    print "TEMPO VOLCA:",temp
+
+    f.close() #fecha o arquivo
+
+    return od, W_data, W_valor, temp            

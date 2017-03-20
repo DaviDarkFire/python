@@ -58,6 +58,7 @@ def pip(W, count): #função que calcula a quantidade de pips dada por count
 
 
         del w[keys_w[minij]]
+
     return w
 
 
@@ -91,12 +92,14 @@ def gera_grafico(od):
 
     plt.xticks(rotation=60)
     plt.tight_layout()
-    plt.grid(True)    
+    plt.grid(True)
     plt.show()
 
-def main():
+def main(w_mod):
     start_time = time.time()
     W = {}
+    W_data = []
+    W_valor = []
     with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
         for linha in f:
             linha = linha.strip()
@@ -104,17 +107,20 @@ def main():
                 valores = linha.split(',')
                 x,y = trataValores(valores)
                 W[x] = y
+                W_data.append(x)
+                W_valor.append(y)
 
-    W = collections.OrderedDict(sorted(W.items()))
+    #W = collections.OrderedDict(sorted(W.items()))
 
     w = {}					  #cria o dicionário w
 
-    w = pip(W,50) #pede 50 pips a partir dos valores passados em W
+    w = pip(W,w_mod) #pede 50 pips a partir dos valores passados em W
 
     od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
 
-    print "PIPS:",time.time() - start_time
+
+    temp = time.time() - start_time
+    print "TEMPO PIPS:",temp
     f.close() #fecha o arquivo
 
-    return od
-    
+    return od, W_data, W_valor, temp
