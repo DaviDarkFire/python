@@ -70,8 +70,8 @@ def gera_grafico(od):
 
     plt.xticks(rotation=60)
     plt.tight_layout()
-    plt.grid(True)    
-    plt.show()    
+    plt.grid(True)
+    plt.show()
 
 
 def main(w_mod):
@@ -131,11 +131,13 @@ def main(w_mod):
 
     for i in range(0,len(temp_min),2*len(temp_min)/w_mod):
         od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
-            
+
     od = collections.OrderedDict(sorted(od.items()))
+    #gera_grafico(od)
     temp = time.time() - start_time
     print "TEMPO VOLCA:",temp
 
     f.close() #fecha o arquivo
 
-    return od, W_data, W_valor, temp            
+    return od, W_data, W_valor, temp
+#main(50)

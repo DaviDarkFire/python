@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
 import collections
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,6 +8,10 @@ import matplotlib.dates as mdates
 import time
 import heapq
 import operator
+
+
+def trataValores(valores):
+    return int(valores[0]), float(valores[1])
 
 def gera_grafico(od):
     dias = []
@@ -51,20 +56,50 @@ def main(percent):
                 valores = linha.split(',')
                 x,y = trataValores(valores)
                 W_data.append(x)
+
                 W_valor.append(y)
 
-
-    w_data = []
-    w_valor = []
     #w_data = collections.deque(w_data)
     #w_valor = collections.deque(w_valor)
+    w_data = []
+    w_valor = []
 
+    w_data.append(W_data[0]) #considera o maior valor como sendo o primeiro
+    w_valor.append(W_valor[0]) #considera o maior valor como sendo o primeiro
+    high = W_valor[0]
+    high_data = W_data[0]
+    newHigh = (W_valor[0]*(percent/100))+W_valor[0]
+    for i, val in enumerate(W_valor):
+        if (val >= newHigh):
+            high = val
+            high_data = W_data[i]
+            newHigh = (high*(percent/100))+high
 
+        if (val <= high-(high*(percent/100))):
+            w_data.append(high_data)
+            w_valor.append(high)
+            high = val
+            high_data = W_data[i]
+            newHigh = (high*(percent/100))+high
+
+        if(i == len(W_valor)-1):
+            w_data.append(high_data)
+            w_valor.append(high)
+
+    for i, val in enumerate(w_valor):
+        print w_data[i], ",", val
+
+    od = {}
+    for i, val in enumerate(w_valor):
+        od[w_data[i]] = val
 
     od = collections.OrderedDict(sorted(od.items()))
+    gera_grafico(od)
     temp = time.time() - start_time
     print "TEMPO ZIGZAG:",temp
 
     f.close() #fecha o arquivo
 
-    return od, W_data, W_valor, temp
+    #return od, W_data, W_valor, temp
+
+main(5)
