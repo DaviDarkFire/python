@@ -133,11 +133,12 @@ def main(w_mod):
         od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
 
     od = collections.OrderedDict(sorted(od.items()))
-    #gera_grafico(od)
     temp = time.time() - start_time
     print "TEMPO VOLCA:",temp
+    gera_grafico(od)
+    
 
     f.close() #fecha o arquivo
 
     return od, W_data, W_valor, temp
-#main(50)
+main(50)

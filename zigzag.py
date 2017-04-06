@@ -86,18 +86,18 @@ def main(percent):
             w_data.append(high_data)
             w_valor.append(high)
 
-    for i, val in enumerate(w_valor):
-        print w_data[i], ",", val
+    #for i, val in enumerate(w_valor): ta printando os valores 
+    #    print w_data[i], ",", val
 
     od = {}
     for i, val in enumerate(w_valor):
         od[w_data[i]] = val
 
     od = collections.OrderedDict(sorted(od.items()))
-    gera_grafico(od)
     temp = time.time() - start_time
     print "TEMPO ZIGZAG:",temp
-
+    gera_grafico(od)
+    
     f.close() #fecha o arquivo
 
     #return od, W_data, W_valor, temp
