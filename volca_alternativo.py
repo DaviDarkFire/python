@@ -135,10 +135,10 @@ def main(w_mod):
     od = collections.OrderedDict(sorted(od.items()))
     temp = time.time() - start_time
     print "TEMPO VOLCA:",temp
-    gera_grafico(od)
-    
+    #gera_grafico(od)
+
 
     f.close() #fecha o arquivo
 
     return od, W_data, W_valor, temp
-main(50)
+#main(50)
