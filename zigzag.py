@@ -99,7 +99,7 @@ def main(percent):
     #gera_grafico(od)
 
     f.close() #fecha o arquivo
-
+    #print len(od)
     return od, W_data, W_valor, temp
 
-#main(5)
+#main(4.5)

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
+import zigzag
 import volca_alternativo as volca
 import pips
 
@@ -27,21 +29,29 @@ def calc_erro(od, W_data, W_valor): #sabendo agora a equação da reta podemos g
             	y = val*m+a
             	erro = abs(W_valor[l+j]-y)+erro
     return erro
-def main(w_mod):
+def main(w_mod, percent):
     #retorno dos valores
     temp_pips = 0
     temp_volca = 0
+	temp_zigzag = 0
+
     od, W_data, W_valor, temp_pips = pips.main(w_mod)
     erro_pips = calc_erro(od, W_data, W_valor)
     print "ERRO PIPS:", erro_pips
+
     od, W_data, W_valor, temp_volca = volca.main(w_mod)
     erro_volca = calc_erro(od, W_data, W_valor)
     print "ERRO VOLCA:", erro_volca
-    return temp_pips, temp_volca, erro_pips, erro_volca
-	#falta retornar os valores de erro e tempo e fazer essa parada igual gente pq tem mta gambiarra
+
+	od, W_data, W_valor, temp_zigzag = zigzag.main(percent)
+    erro_zigzag = calc_erro(od, W_data, W_valor)
+    print "ERRO ZIGZAG:", erro_zigzag
+
+    return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag
+
 
 def erro_vs_pontos():
-    saida = open("erro_vs_pontos.csv", "w")
+    saida = open("saida/erro_vs_pontos.csv", "w")
     saida.write('"Quantidade de Pontos"')
     saida.write(',')
     saida.write('Tempo Pips')
@@ -51,9 +61,19 @@ def erro_vs_pontos():
     saida.write('Tempo Volca')
     saida.write(',')
     saida.write('Erro Volca')
+	saida.write(',')
+    saida.write('Tempo Zigzag')
+    saida.write(',')
+    saida.write('Erro Zigzag')
     saida.write('\n')
-    for i in range(5, 105, 5):
-        temp_pips, temp_volca, erro_pips, erro_volca = main(i)
+	total = 100
+	passo = 5
+	total1 = total+5
+	decremento = 15.5/(total/passo) #incremento do zigzag, o valor é 15.5 pq a é diferença de 20 e 6, que são os valores
+	percent = 20
+    for i in range(5, total1, passo):
+        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag = main(i, percent)
+		percent = percent-decremento
         saida.write(str(i))
         saida.write(',')
         saida.write(str(temp_pips))
