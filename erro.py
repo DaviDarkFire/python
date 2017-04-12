@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division
+import matplotlib.pyplot as plt
 import zigzag
 import volca_alternativo as volca
 import pips
@@ -33,7 +34,7 @@ def main(w_mod, percent):
     #retorno dos valores
     temp_pips = 0
     temp_volca = 0
-	temp_zigzag = 0
+    temp_zigzag = 0
 
     od, W_data, W_valor, temp_pips = pips.main(w_mod)
     erro_pips = calc_erro(od, W_data, W_valor)
@@ -43,15 +44,35 @@ def main(w_mod, percent):
     erro_volca = calc_erro(od, W_data, W_valor)
     print "ERRO VOLCA:", erro_volca
 
-	od, W_data, W_valor, temp_zigzag = zigzag.main(percent)
+    od, W_data, W_valor, temp_zigzag = zigzag.main(percent)
     erro_zigzag = calc_erro(od, W_data, W_valor)
     print "ERRO ZIGZAG:", erro_zigzag
 
     return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag
 
 
-def erro_vs_pontos():
-    saida = open("saida/erro_vs_pontos.csv", "w")
+
+def graf(x, y, z, w, name, dataset_name):
+    fig, ax = plt.subplots()
+
+    plt.plot(x, y,'b-',label=name+' Pips')
+    plt.plot(x, z,'g-',label=name+' Volca')
+    plt.plot(x, w,'r-',label=name+' Zigzag')
+    #plt.plot(dias, valores,'b-',label='Sem simplificação')
+    plt.legend(loc='upper right')
+
+    plt.title("Pontos vs "+name)
+    plt.xlabel("Pontos")
+    plt.ylabel(name)
+
+    plt.xticks(rotation=60)
+    plt.tight_layout()
+    plt.grid(True)
+    plt.savefig('saida/'+dataset_name+'/Pontos vs'+name,dpi=600)
+
+
+def erro_vs_pontos(dataset_name):
+    saida = open("saida/"+dataset_name+"/erro_tempo_vs_pontos.csv", "w")
     saida.write('"Quantidade de Pontos"')
     saida.write(',')
     saida.write('Tempo Pips')
@@ -61,19 +82,47 @@ def erro_vs_pontos():
     saida.write('Tempo Volca')
     saida.write(',')
     saida.write('Erro Volca')
-	saida.write(',')
+    saida.write(',')
     saida.write('Tempo Zigzag')
     saida.write(',')
     saida.write('Erro Zigzag')
     saida.write('\n')
-	total = 100
-	passo = 5
-	total1 = total+5
-	decremento = 15.5/(total/passo) #incremento do zigzag, o valor é 15.5 pq a é diferença de 20 e 6, que são os valores
-	percent = 20
+
+    total = 100
+    passo = 5
+    total1 = total+5
+    decremento = 15.5/(total/passo) #incremento do zigzag, o valor é 15.5 pq a é diferença de 20 e 4.5,
+    percent = 20                    #que são os valores que todos os datasets retiram 5 e 100 pts respectivamente
+    j = 0 #contador pra gerar a lista
+
+    tp = [] #essas são as listas q1ue serão passadas para gerar os gráficos de erro e de tempo
+    tv = []
+    tz = []
+    ep = []
+    ev = []
+    ez = []
+    p = []
+
     for i in range(5, total1, passo):
         temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag = main(i, percent)
-		percent = percent-decremento
+        percent = percent-decremento
+
+        tp.append(j)
+        tv.append(j)
+        tz.append(j)
+        ep.append(j)
+        ev.append(j)
+        ez.append(j)
+        p.append(j)
+        tp[j] = temp_pips
+        tv[j] = temp_volca
+        tz[j] = temp_zigzag
+        ep[j] = erro_pips
+        ev[j] = erro_volca
+        ez[j] = erro_zigzag
+        p[j] = i
+        j = j+1
+
         saida.write(str(i))
         saida.write(',')
         saida.write(str(temp_pips))
@@ -83,6 +132,12 @@ def erro_vs_pontos():
         saida.write(str(temp_volca))
         saida.write(',')
         saida.write(str(erro_volca))
+        saida.write(',')
+        saida.write(str(temp_zigzag))
+        saida.write(',')
+        saida.write(str(erro_zigzag))
         saida.write('\n')
     saida.close()
-erro_vs_pontos()
+    graf(p, ep, ev, ez, "Erro", dataset_name)
+    graf(p, tp, tv, tz, "Tempo", dataset_name)
+erro_vs_pontos("vale5")
