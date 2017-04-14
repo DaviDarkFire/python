@@ -30,21 +30,21 @@ def calc_erro(od, W_data, W_valor): #sabendo agora a equação da reta podemos g
             	y = val*m+a
             	erro = abs(W_valor[l+j]-y)+erro
     return erro
-def main(w_mod, percent):
+def main(w_mod, percent, W, W_data, W_valor):
     #retorno dos valores
     temp_pips = 0
     temp_volca = 0
     temp_zigzag = 0
 
-    od, W_data, W_valor, temp_pips = pips.main(w_mod)
+    od, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor)
     erro_pips = calc_erro(od, W_data, W_valor)
     print "ERRO PIPS:", erro_pips
 
-    od, W_data, W_valor, temp_volca = volca.main(w_mod)
+    od, W_data, W_valor, temp_volca = volca.main(w_mod, W_data, W_valor)
     erro_volca = calc_erro(od, W_data, W_valor)
     print "ERRO VOLCA:", erro_volca
 
-    od, W_data, W_valor, temp_zigzag = zigzag.main(percent)
+    od, W_data, W_valor, temp_zigzag = zigzag.main(percent, W_data, W_valor)
     erro_zigzag = calc_erro(od, W_data, W_valor)
     print "ERRO ZIGZAG:", erro_zigzag
 
@@ -71,7 +71,7 @@ def graf(x, y, z, w, name, dataset_name):
     plt.savefig('saida/'+dataset_name+'/Pontos vs'+name,dpi=600)
 
 
-def erro_vs_pontos(dataset_name):
+def erro_vs_pontos(dataset_name, W, W_data, W_valor):
     saida = open("saida/"+dataset_name+"/erro_tempo_vs_pontos.csv", "w")
     saida.write('"Quantidade de Pontos"')
     saida.write(',')
@@ -104,7 +104,7 @@ def erro_vs_pontos(dataset_name):
     p = []
 
     for i in range(5, total1, passo):
-        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag = main(i, percent)
+        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag = main(i, percent, W, W_data, W_valor)
         percent = percent-decremento
 
         tp.append(j)
@@ -140,4 +140,4 @@ def erro_vs_pontos(dataset_name):
     saida.close()
     graf(p, ep, ev, ez, "Erro", dataset_name)
     graf(p, tp, tv, tz, "Tempo", dataset_name)
-erro_vs_pontos("vale5")
+#erro_vs_pontos("vale5")

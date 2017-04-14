@@ -30,7 +30,7 @@ with open(file_name) as f:
                 s.write(valores[5])
                 s.write('\n')
         else:
-            flag = 1        
+            flag = 1
 
 f.close()
 s.close()

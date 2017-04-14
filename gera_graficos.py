@@ -10,7 +10,7 @@ import time
 def trataValores(valores): #transforma os literais em valores inteiro e float, respectivamente, pra uso posterior
     return int(valores[0]), float(valores[1])
 
-def gera_graficos(od_volca, od_pips, od_zigzag):
+def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
     dias_volca = []
     valores_volca = []
     dias_pips = []
@@ -96,10 +96,4 @@ def gera_graficos(od_volca, od_pips, od_zigzag):
     plt.xticks(rotation=60)
     plt.tight_layout()
     plt.grid(True)
-    plt.savefig('saida/vale5.png',dpi=600)
-
-
-od_volca, u, v, t = volca.main(50)
-od_pips, u, v, t = pips.main(50)
-od_zigzag, u, v, t = zigzag.main(6)
-gera_graficos(od_volca, od_pips, od_zigzag)
+    plt.savefig('saida/'+dataset_name+'/50pt_vs_original_comp',dpi=600)

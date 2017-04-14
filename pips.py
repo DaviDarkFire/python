@@ -95,21 +95,8 @@ def gera_grafico(od):
     plt.grid(True)
     plt.show()
 
-def main(w_mod):
+def main(w_mod, W, W_data, W_valor):
     start_time = time.time()
-    W = {}
-    W_data = []
-    W_valor = []
-    with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
-        for linha in f:
-            linha = linha.strip()
-            if linha:
-                valores = linha.split(',')
-                x,y = trataValores(valores)
-                W[x] = y
-                W_data.append(x)
-                W_valor.append(y)
-
     #W = collections.OrderedDict(sorted(W.items()))
 
     w = {}					  #cria o dicionário w
@@ -121,8 +108,8 @@ def main(w_mod):
 
     temp = time.time() - start_time
     print "TEMPO PIPS:",temp
-    #gera_grafico(od)
+    gera_grafico(od)
     f.close() #fecha o arquivo
 
     return od, W_data, W_valor, temp
-#main(50)
+main(10)

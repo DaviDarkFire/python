@@ -74,21 +74,8 @@ def gera_grafico(od):
     plt.show()
 
 
-def main(w_mod):
+def main(w_mod, W_data, W_valor):
     start_time = time.time()
-
-    W_data = []
-    W_valor = []
-    with open('output.ou') as f: #inicializa os valores de W a partir do arquivo de entrada
-        for linha in f:
-            linha = linha.strip()
-            if linha:
-                valores = linha.split(',')
-                x,y = trataValores(valores)
-                W_data.append(x)
-                W_valor.append(y)
-
-    #w_mod = 50               #le o |w|
     p = 1                     #le o p
     w_data = []
     w_valor = []
