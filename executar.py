@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 import erro
 import gera_graficos as graf
-import trataArquivo as t
 import sys
 import os
-#for filename in os.listdir(directory):
 
 def trataArquivo(file_name):
     s = open("output.ou", "w")
@@ -35,7 +33,11 @@ def trataArquivo(file_name):
     f.close()
     s.close()
 
-
+def main():
+    for file_name in os.listdir("/entrada/"):
+        trataArquivo(file_name)
+        
+	
 
 
 

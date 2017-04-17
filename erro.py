@@ -36,19 +36,19 @@ def main(w_mod, percent, W, W_data, W_valor):
     temp_volca = 0
     temp_zigzag = 0
 
-    od, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor)
+    od_pips, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor)
     erro_pips = calc_erro(od, W_data, W_valor)
     print "ERRO PIPS:", erro_pips
 
-    od, W_data, W_valor, temp_volca = volca.main(w_mod, W_data, W_valor)
+    od_volca, W_data, W_valor, temp_volca = volca.main(w_mod, W_data, W_valor)
     erro_volca = calc_erro(od, W_data, W_valor)
     print "ERRO VOLCA:", erro_volca
 
-    od, W_data, W_valor, temp_zigzag = zigzag.main(percent, W_data, W_valor)
+    od_zigzag, W_data, W_valor, temp_zigzag = zigzag.main(percent, W_data, W_valor)
     erro_zigzag = calc_erro(od, W_data, W_valor)
     print "ERRO ZIGZAG:", erro_zigzag
 
-    return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag
+    return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag
 
 
 
@@ -104,7 +104,7 @@ def erro_vs_pontos(dataset_name, W, W_data, W_valor):
     p = []
 
     for i in range(5, total1, passo):
-        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag = main(i, percent, W, W_data, W_valor)
+        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = main(i, percent, W, W_data, W_valor)
         percent = percent-decremento
 
         tp.append(j)
@@ -140,4 +140,5 @@ def erro_vs_pontos(dataset_name, W, W_data, W_valor):
     saida.close()
     graf(p, ep, ev, ez, "Erro", dataset_name)
     graf(p, tp, tv, tz, "Tempo", dataset_name)
+    return od_pips, od_volca, od_zigzag
 #erro_vs_pontos("vale5")
