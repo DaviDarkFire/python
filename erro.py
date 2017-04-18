@@ -108,8 +108,8 @@ def main(dataset_name, W, W_data, W_valor):
 
     for i in range(5, total1, passo):
         temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = erro_vs_pontos(i, percent, W, W_data, W_valor)
+        print "Porcento: "+str(percent)
         percent = percent-decremento
-
         tp.append(j)
         tv.append(j)
         tz.append(j)
