@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import zigzag
 import volca_alternativo as volca
 import pips
+import os
 
 def calc_reta(x1,y1,x2,y2): #função que calcula reta que liga os dois pontos mais próximos da simplificação
 	m = (float(y2-y1))/(float(x2-x1))
@@ -30,23 +31,23 @@ def calc_erro(od, W_data, W_valor): #sabendo agora a equação da reta podemos g
             	y = val*m+a
             	erro = abs(W_valor[l+j]-y)+erro
     return erro
-def main(w_mod, percent, W, W_data, W_valor):
+def erro_vs_pontos(w_mod, percent, W, W_data, W_valor):
     #retorno dos valores
     temp_pips = 0
     temp_volca = 0
     temp_zigzag = 0
 
-    od_pips, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor)
-    erro_pips = calc_erro(od, W_data, W_valor)
-    print "ERRO PIPS:", erro_pips
+    od_pips, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor) #resolver
+    erro_pips = calc_erro(od_pips, W_data, W_valor)
+    #print "ERRO PIPS:", erro_pips
 
     od_volca, W_data, W_valor, temp_volca = volca.main(w_mod, W_data, W_valor)
-    erro_volca = calc_erro(od, W_data, W_valor)
-    print "ERRO VOLCA:", erro_volca
+    erro_volca = calc_erro(od_volca, W_data, W_valor)
+    #print "ERRO VOLCA:", erro_volca
 
     od_zigzag, W_data, W_valor, temp_zigzag = zigzag.main(percent, W_data, W_valor)
-    erro_zigzag = calc_erro(od, W_data, W_valor)
-    print "ERRO ZIGZAG:", erro_zigzag
+    erro_zigzag = calc_erro(od_zigzag, W_data, W_valor)
+    #print "ERRO ZIGZAG:", erro_zigzag
 
     return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag
 
@@ -71,7 +72,9 @@ def graf(x, y, z, w, name, dataset_name):
     plt.savefig('saida/'+dataset_name+'/Pontos vs'+name,dpi=600)
 
 
-def erro_vs_pontos(dataset_name, W, W_data, W_valor):
+def main(dataset_name, W, W_data, W_valor):
+    if not os.path.exists("saida/"+dataset_name):
+        os.makedirs("saida/"+dataset_name)
     saida = open("saida/"+dataset_name+"/erro_tempo_vs_pontos.csv", "w")
     saida.write('"Quantidade de Pontos"')
     saida.write(',')
@@ -104,7 +107,7 @@ def erro_vs_pontos(dataset_name, W, W_data, W_valor):
     p = []
 
     for i in range(5, total1, passo):
-        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = main(i, percent, W, W_data, W_valor)
+        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = erro_vs_pontos(i, percent, W, W_data, W_valor)
         percent = percent-decremento
 
         tp.append(j)

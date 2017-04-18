@@ -85,7 +85,7 @@ def main(percent, W_data, W_valor):
     print "TEMPO ZIGZAG:",temp
     #gera_grafico(od)
 
-    f.close() #fecha o arquivo
+    
     #print len(od)
     return od, W_data, W_valor, temp
 

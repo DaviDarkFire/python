@@ -125,7 +125,6 @@ def main(w_mod, W_data, W_valor):
     #gera_grafico(od)
 
 
-    f.close() #fecha o arquivo
-
+    
     return od, W_data, W_valor, temp
 #main(50)

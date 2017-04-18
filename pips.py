@@ -108,8 +108,8 @@ def main(w_mod, W, W_data, W_valor):
 
     temp = time.time() - start_time
     print "TEMPO PIPS:",temp
-    gera_grafico(od)
-    f.close() #fecha o arquivo
+    #gera_grafico(od)
+
 
     return od, W_data, W_valor, temp
-main(10)
+#main(10)
