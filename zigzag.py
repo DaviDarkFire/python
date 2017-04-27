@@ -53,44 +53,37 @@ def main(percent, W_data, W_valor):
 
     w_data.append(W_data[0]) #considera o maior valor como sendo o primeiro
     w_valor.append(W_valor[0]) #considera o maior valor como sendo o primeiro
-    high = W_valor[0]
-    high_data = W_data[0]
-    low = W_valor[0]
-    low_data = W_data[0]
-    newHigh = (W_valor[0]*(percent/100))+W_valor[0]
-    newLow = W_valor[0]-(W_valor[0]*(percent/100))
+    topo = False
+    fundo = False
+    indiceFundo = 0
+    indiceTopo = 0
+    indiceInicio = 0
     
     for i, val in enumerate(W_valor):
-        if (val >= newHigh):
-            high = val
-            high_data = W_data[i]
-            newHigh = (high*(percent/100))+high
-            
-        if (val <= newLow):
-            low = val
-            low_data = W_data[i]
-            newLow = (low-(low*(percent/100)))
-
-        if (val <= high-(high*(percent/100))):
-            w_data.append(high_data)
-            w_valor.append(high)
-            high = val
-            high_data = W_data[i]
-            newHigh = (high*(percent/100))+high   
-            
-        if (val >= low+(low*(percent/100))):
-            w_data.append(low_data)
-            w_valor.append(low)
-            low = val
-            low_data = W_data[i]
-            newLow = low-(low*(percent/100))
-
+    
+        if(W_valor[i] > W_valor[indiceTopo]):
         
-          
-        
-        if(i == len(W_valor)-1):
-            w_data.append(high_data)
-            w_valor.append(high)
+            indiceTopo = i
+            if((not fundo) and ((W_valor[indiceTopo] - W_valor[indiceFundo]) / W_valor[indiceFundo]) * 100 >= percent):
+                w_data.append(W_data[indiceFundo])
+                w_valor.append(W_valor[indiceFundo])
+                topo = False
+                fundo = True
+                
+            if(fundo):
+                indiceFundo = indiceTopo
+        else:
+            if(W_valor[i] < W_valor[indiceFundo]):
+                    
+                indiceFundo = i
+                if((not topo) and ((W_valor[indiceTopo] - W_valor[indiceFundo]) / W_valor[indiceFundo]) * 100 >= percent):
+                    w_data.append(W_data[indiceTopo])
+                    w_valor.append(W_valor[indiceTopo])
+                    topo = True
+                    fundo = False
+                
+                if(topo):
+                    indiceTopo = indiceFundo
 
     #for i, val in enumerate(w_valor): ta printando os valores
     #    print w_data[i], ",", val
