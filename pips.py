@@ -16,29 +16,15 @@ def distancia_vertical(x1,y1,x2,y2,x3,y3): #essa distância vertical retorna a d
         dv = dv*(-1)
     return dv
 
-def calc_pip(W,x1,y1,x2,y2): #função não usada
-    keys_W = W.keys()
-    i = keys_W.index(x1)
-    j = keys_W.index(x2)
-    dv = dv_aux = x_aux = y_aux = 0
-    for k in keys_W[i:j+1]:
-        dv_aux = distancia_vertical(x1,y1,x2,y2,k,W[k])
-        if(dv_aux > dv):
-            y_aux = W[k]
-            dv = dv_aux
-            x_aux = k
-    return x_aux,y_aux
-
 def pip(W, count): #função que calcula a quantidade de pips dada por count
     w = {}
     for chave in W.keys():
         w[chave] = W[chave]
         if (len(w) <= count):
             continue
-
+            
         miniv = sys.maxsize
         minij = 0
-
         keys_w = w.keys()
         ultimo = keys_w[-1]
         for j, val in enumerate(keys_w):
@@ -55,61 +41,14 @@ def pip(W, count): #função que calcula a quantidade de pips dada por count
                     minij = j
             else:
                 continue
-
-
         del w[keys_w[minij]]
-
     return w
-
-
-def trataValores(valores): #transforma os literais em valores inteiro e float, respectivamente, pra uso posterior
-    return int(valores[0]), float(valores[1])
-
-def gera_grafico(od):
-    dias = []
-    valores = []
-    j = 0
-    for i in od:
-        a = mdates.datestr2num(str(i))
-        dias.append(j)
-        dias[j] = mdates.num2date(a)
-        #print dias[j]
-        valores.append(j)
-        valores[j] = od[i]
-        j = j+1
-
-    hfmt = mdates.DateFormatter('%d/%m/%Y')
-
-    fig, ax = plt.subplots()
-
-    ax.xaxis.set_major_formatter(hfmt)
-
-    plt.plot_date(x=dias, y=valores, fmt="o-")
-
-    plt.title("Data vs Valor")
-    plt.xlabel("Data")
-    plt.ylabel("Valor")
-
-    plt.xticks(rotation=60)
-    plt.tight_layout()
-    plt.grid(True)
-    plt.show()
 
 def main(w_mod, W, W_data, W_valor):
     start_time = time.time()
-    #W = collections.OrderedDict(sorted(W.items()))
-
     w = {}					  #cria o dicionário w
-
     w = pip(W,w_mod) #pede 50 pips a partir dos valores passados em W
-
     od = collections.OrderedDict(sorted(w.items())) #ordena pelo índice os pips
-
-
     temp = time.time() - start_time
     print "TEMPO PIPS:",temp
-    #gera_grafico(od)
-
-
     return od, W_data, W_valor, temp
-#main(10)

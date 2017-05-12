@@ -8,8 +8,7 @@ import time
 import heapq
 import operator
 
-
-def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag):
+def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag): #função que move a janela pela time serie
 	if(flag == 1):
 		for i in range(w_mod):
 			w_valor.append(W_valor[i])
@@ -29,7 +28,6 @@ def iprice_max(w_valor,w_data):		#função que retorna o endereço/dia do maior 
             maior = val
     return indice_maior
 
-
 def iprice_min(w_valor,w_data):				#função que retorna o endereço/dia do menor ponto
 	menor = w_valor[0]
 	indice_menor = 0
@@ -38,41 +36,6 @@ def iprice_min(w_valor,w_data):				#função que retorna o endereço/dia do meno
 			indice_menor = i
 			menor = val
 	return indice_menor
-
-def trataValores(valores):
-    return int(valores[0]), float(valores[1])
-
-
-def gera_grafico(od):
-    dias = []
-    valores = []
-    j = 0
-    for i in od:
-        a = mdates.datestr2num(str(i))
-        dias.append(j)
-        dias[j] = mdates.num2date(a)
-        #print dias[j]
-        valores.append(j)
-        valores[j] = od[i]
-        j = j+1
-
-    hfmt = mdates.DateFormatter('%d/%m/%Y')
-
-    fig, ax = plt.subplots()
-
-    ax.xaxis.set_major_formatter(hfmt)
-
-    plt.plot_date(x=dias, y=valores, fmt="o-")
-
-    plt.title("Data vs Valor")
-    plt.xlabel("Data")
-    plt.ylabel("Valor")
-
-    plt.xticks(rotation=60)
-    plt.tight_layout()
-    plt.grid(True)
-    plt.show()
-
 
 def main(w_mod, W_data, W_valor):
     start_time = time.time()
@@ -92,7 +55,7 @@ def main(w_mod, W_data, W_valor):
 
     flag = 1
     tamanho = len(W_data)-w_mod+1
-    for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo, alterar
+    for i, data in enumerate(W_data[:tamanho]): #laço que vai levando a janela w e votando nos pontos de máximo e mínimo
         valor = W_valor[i]
         slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag)
         flag = 0
@@ -122,9 +85,4 @@ def main(w_mod, W_data, W_valor):
     od = collections.OrderedDict(sorted(od.items()))
     temp = time.time() - start_time
     print "TEMPO VOLCA:",temp
-    #gera_grafico(od)
-
-
-    
     return od, W_data, W_valor, temp
-#main(50)

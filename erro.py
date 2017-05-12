@@ -31,41 +31,35 @@ def calc_erro(od, W_data, W_valor): #sabendo agora a equação da reta podemos g
             	y = val*m+a
             	erro = abs(W_valor[l+j]-y)+erro
     return erro
-def erro_vs_pontos(w_mod, percent, W, W_data, W_valor):
-    #retorno dos valores
+
+
+def erro_vs_pontos(w_mod, W, W_data, W_valor):
     temp_pips = 0
     temp_volca = 0
     temp_zigzag = 0
 
     od_pips, W_data, W_valor, temp_pips = pips.main(w_mod, W, W_data, W_valor) #resolver
     erro_pips = calc_erro(od_pips, W_data, W_valor)
-    #print "ERRO PIPS:", erro_pips
 
     od_volca, W_data, W_valor, temp_volca = volca.main(w_mod, W_data, W_valor)
     erro_volca = calc_erro(od_volca, W_data, W_valor)
-    #print "ERRO VOLCA:", erro_volca
 
-    od_zigzag, W_data, W_valor, temp_zigzag = zigzag.main(percent, W_data, W_valor)
+    od_zigzag, W_data, W_valor, temp_zigzag = zigzag.main(w_mod, W_data, W_valor)
     erro_zigzag = calc_erro(od_zigzag, W_data, W_valor)
-    #print "ERRO ZIGZAG:", erro_zigzag
 
     return temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag
 
 
-
 def graf(x, y, z, w, name, dataset_name):
     fig, ax = plt.subplots()
-
     plt.plot(x, y,'b-',label=name+' Pips')
     plt.plot(x, z,'g-',label=name+' Volca')
     plt.plot(x, w,'r-',label=name+' Zigzag')
-    #plt.plot(dias, valores,'b-',label='Sem simplificação')
-    plt.legend(loc='upper right')
 
+    plt.legend(loc='upper right')
     plt.title("Pontos vs "+name)
     plt.xlabel("Pontos")
     plt.ylabel(name)
-
     plt.xticks(rotation=60)
     plt.tight_layout()
     plt.grid(True)
@@ -94,8 +88,7 @@ def main(dataset_name, W, W_data, W_valor):
     total = 100
     passo = 5
     total1 = total+5
-    decremento = 15.5/(total/passo) #incremento do zigzag, o valor é 15.5 pq a é diferença de 20 e 4.5,
-    percent = 20                    #que são os valores que todos os datasets retiram 5 e 100 pts respectivamente
+    
     j = 0 #contador pra gerar a lista
 
     tp = [] #essas são as listas q1ue serão passadas para gerar os gráficos de erro e de tempo
@@ -107,9 +100,7 @@ def main(dataset_name, W, W_data, W_valor):
     p = []
 
     for i in range(5, total1, passo):
-        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = erro_vs_pontos(i, percent, W, W_data, W_valor)
-        print "Porcento: "+str(percent)
-        percent = percent-decremento
+        temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = erro_vs_pontos(i, W, W_data, W_valor)        
         tp.append(j)
         tv.append(j)
         tz.append(j)
@@ -144,4 +135,3 @@ def main(dataset_name, W, W_data, W_valor):
     graf(p, ep, ev, ez, "Erro", dataset_name)
     graf(p, tp, tv, tz, "Tempo", dataset_name)
     return od_pips, od_volca, od_zigzag
-#erro_vs_pontos("vale5")

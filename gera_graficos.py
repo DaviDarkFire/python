@@ -79,14 +79,11 @@ def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
     fig, ax = plt.subplots()
 
     ax.xaxis.set_major_formatter(hfmt)
-    # ax.legend(loc='best', fancybox=True, framealpha=0.5)
-    # ax.set_title('fancy, transparent legends')
 
     plt.plot_date(x=dias, y=valores, fmt="k-", label='original')
     plt.plot(dias_volca, valores_volca,'b-',label='volca')
     plt.plot(dias_pips, valores_pips,'g-',label='pips')
     plt.plot(dias_zigzag, valores_zigzag,'r-',label='zigzag')
-    #plt.plot(dias, valores,'b-',label='Sem simplificação')
     plt.legend(loc='upper right')
 
     plt.title("Data vs Valor")
