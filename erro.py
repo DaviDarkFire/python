@@ -6,6 +6,8 @@ import zigzag
 import volca_alternativo as volca
 import pips
 import os
+from matplotlib.backends.backend_pdf import PdfPages
+from pylab import *
 
 def calc_reta(x1,y1,x2,y2): #função que calcula reta que liga os dois pontos mais próximos da simplificação
 	m = (float(y2-y1))/(float(x2-x1))
@@ -63,8 +65,11 @@ def graf(x, y, z, w, name, dataset_name):
     plt.xticks(rotation=60)
     plt.tight_layout()
     plt.grid(True)
-    plt.savefig('saida/'+dataset_name+'/Pontos vs'+name,dpi=600)
-
+    pdf = PdfPages('saida/'+dataset_name+'/Pontos vs'+name)
+    title('Plot')
+    pdf.savefig()
+    close()
+    pdf.close()
 
 def main(dataset_name, W, W_data, W_valor):
     if not os.path.exists("saida/"+dataset_name):
@@ -131,7 +136,7 @@ def main(dataset_name, W, W_data, W_valor):
         saida.write(',')
         saida.write(str(erro_zigzag))
         saida.write('\n')
-    saida.close()
+    saida.close()    
     graf(p, ep, ev, ez, "Erro", dataset_name)
     graf(p, tp, tv, tz, "Tempo", dataset_name)
     return od_pips, od_volca, od_zigzag

@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import pips
-import volca_alternativo as volca
-import zigzag
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time
@@ -12,7 +9,7 @@ from pylab import *
 def trataValores(valores): #transforma os literais em valores inteiro e float, respectivamente, pra uso posterior
     return int(valores[0]), float(valores[1])
 
-def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
+def gera_graficos(dataset_name):
     dias_volca = []
     valores_volca = []
     dias_pips = []
@@ -43,39 +40,6 @@ def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
         valores[j] = W_valor[i]
         j = j+1
 
-
-    j = 0
-    for i in od_volca:
-        a = mdates.datestr2num(str(i))
-        dias_volca.append(j)
-        dias_volca[j] = mdates.num2date(a)
-        #print dias[j]
-        valores_volca.append(j)
-        valores_volca[j] = od_volca[i]
-        j = j+1
-
-
-    j = 0
-    for i in od_pips:
-        a = mdates.datestr2num(str(i))
-        dias_pips.append(j)
-        dias_pips[j] = mdates.num2date(a)
-        #print dias[j]
-        valores_pips.append(j)
-        valores_pips[j] = od_pips[i]
-        j = j+1
-
-    j = 0
-    for i in od_zigzag:
-        a = mdates.datestr2num(str(i))
-        dias_zigzag.append(j)
-        dias_zigzag[j] = mdates.num2date(a)
-        #print dias[j]
-        valores_zigzag.append(j)
-        valores_zigzag[j] = od_zigzag[i]
-        j = j+1
-
-
     hfmt = mdates.DateFormatter('%d/%m/%Y')
 
     fig, ax = plt.subplots()
@@ -83,9 +47,6 @@ def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
     ax.xaxis.set_major_formatter(hfmt)
 
     plt.plot_date(x=dias, y=valores, fmt="k-", label='original')
-    plt.plot(dias_volca, valores_volca,'b-',label='volca')
-    plt.plot(dias_pips, valores_pips,'g-',label='pips')
-    plt.plot(dias_zigzag, valores_zigzag,'r-',label='zigzag')
     plt.legend(loc='upper right')
 
     plt.title("Data vs Valor")
@@ -95,8 +56,12 @@ def gera_graficos(od_volca, od_pips, od_zigzag, dataset_name):
     plt.xticks(rotation=60)
     plt.tight_layout()
     plt.grid(True)
-    pdf = PdfPages('saida/'+dataset_name+'/50pt_vs_original_comp.pdf')
-    title('50pt_vs_original')
+#    pdf = PdfPages('test/'+dataset_name+'/test.pdf')
+    pdf = PdfPages('test/test.pdf')
+
+    title('test')
     pdf.savefig()
     close()
     pdf.close()
+
+gera_graficos("test")
