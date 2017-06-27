@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import division
 import collections
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,6 +8,7 @@ import matplotlib.dates as mdates
 import time
 import heapq
 import operator
+import math
 
 def slide(W_data,W_valor,w_data,w_valor,w_mod,data,valor,flag): #função que move a janela pela time serie
 	if(flag == 1):
@@ -70,16 +72,18 @@ def main(w_mod, W_data, W_valor):
     temp_min = []
 
     for i, val in enumerate(v_max):
-        if(val == w_mod):
+        if(val >= w_mod):
             temp_max.append(i)
-        if(v_min[i] == w_mod):
+        if(v_min[i] >= w_mod):
             temp_min.append(i)
 
     od = {}
-    for i in range(0,len(temp_max),2*len(temp_max)/w_mod):
+    passo1 = int(math.ceil((len(temp_max)/w_mod)*2))
+    passo2 = int(math.ceil((len(temp_max)/w_mod)*2))
+    for i in range(0,len(temp_max), passo1):
         od[W_data[temp_max[i]]] = W_valor[temp_max[i]]
 
-    for i in range(0,len(temp_min),2*len(temp_min)/w_mod):
+    for i in range(0,len(temp_min), passo2):
         od[W_data[temp_min[i]]] = W_valor[temp_min[i]]
 
     od = collections.OrderedDict(sorted(od.items()))

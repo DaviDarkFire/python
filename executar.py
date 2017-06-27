@@ -10,6 +10,7 @@ def trataValores(valores): #transforma os literais em valores inteiro e float, r
     return int(valores[0]), float(valores[1])
 
 def trataArquivo(file_name): #trata os valores recebidos no arquivo.csv para que assim possamos aplicar os algortimos sobre eles
+    print file_name
     s = open("output.ou", "w")
     with open("entrada/"+file_name) as f:
         flag = 0
@@ -18,14 +19,14 @@ def trataArquivo(file_name): #trata os valores recebidos no arquivo.csv para que
                 linha = linha.strip()
                 if linha:
                     valores = linha.split(',')
-                    a = valores[1]
-                    b = a.split("\"")
-                    c = ''.join(b)
-                    d = c.split(" ")
-                    c = d[0]+d[1]
-                    s.write(c)
+                    data = valores[0]
+                    close = valores[4]
+                    data_aux = data.split("-")
+                    data = data_aux[0]+data_aux[1]+data_aux[2]
+
+                    s.write(data) #gambito
                     s.write(',')
-                    s.write(valores[5])
+                    s.write(close)# dooooooooouble gambito
                     s.write('\n')
             else:
                 flag = 1

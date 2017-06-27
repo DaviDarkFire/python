@@ -3,6 +3,8 @@
 import pips
 import volca_alternativo as volca
 import zigzag
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import time

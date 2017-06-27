@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import zigzag
 import volca_alternativo as volca
@@ -65,7 +67,7 @@ def graf(x, y, z, w, name, dataset_name):
     plt.xticks(rotation=60)
     plt.tight_layout()
     plt.grid(True)
-    pdf = PdfPages('saida/'+dataset_name+'/Pontos vs'+name)
+    pdf = PdfPages('saida/'+dataset_name+'/Pontos vs '+name)
     title('Plot')
     pdf.savefig()
     close()
@@ -139,4 +141,8 @@ def main(dataset_name, W, W_data, W_valor):
     saida.close()    
     graf(p, ep, ev, ez, "Erro", dataset_name)
     graf(p, tp, tv, tz, "Tempo", dataset_name)
+    temp_pips, temp_volca, temp_zigzag, erro_pips, erro_volca, erro_zigzag, od_pips, od_volca, od_zigzag = erro_vs_pontos(10, W, W_data, W_valor)
+    print "Tamanho PIPs: "+str(len(od_pips))
+    print "Tamanho VOLCA: "+str(len(od_volca))
+    print "Tamanho ZIGZAG: "+str(len(od_zigzag))    
     return od_pips, od_volca, od_zigzag
